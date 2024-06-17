@@ -11,9 +11,12 @@ func battleResult(victor : Entity):
 		print("Game over!")
 		print("You won " + str(battlesWon) + " battles!")
 	else:
-		victor.postBattleWinHeal()
-		battlesWon += 1
-		newBattle()
+		if battlesWon < 99:
+			victor.postBattleWinHeal()
+			battlesWon += 1
+			newBattle()
+		else:
+			print("You won the 100th battle! Come back for more next update.")
 
 func newBattle():
 	print("Battle " + "#" + str(battlesWon + 1))

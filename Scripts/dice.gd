@@ -2,12 +2,9 @@ class_name Dice
 
 extends Node2D
 
-@export var diceName : String:
-	get:
-		return "{0} D{1}".format([diceName, sides])
-
-@export var sides : int
-@export var modifier : int
+@export var diceResource : DiceResource
+@onready var sides := diceResource.sides
+@onready var modifier := diceResource.modifier
 
 var diceRoll : int:
 	get:

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="StatSheet" load_steps=2 format=3 uid="uid://cgnvygghf3knr"]
+
+[ext_resource type="Script" path="res://Scripts/stat_sheet.gd" id="1_lngtl"]
+
+[resource]
+script = ExtResource("1_lngtl")
+max_hp = 4
+moneyRange = 2
+dropChance = 70
