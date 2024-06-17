@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cngldi5ngvl2g"]
+
+[ext_resource type="Script" path="res://Scripts/enemy_randomizer.gd" id="1_5loxy"]
+
+[node name="EnemyRandomizer" type="Node2D"]
+script = ExtResource("1_5loxy")
