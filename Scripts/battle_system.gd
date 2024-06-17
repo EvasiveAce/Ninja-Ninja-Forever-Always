@@ -61,6 +61,8 @@ func speedRoll():
 
 func end(victor : Entity):
 	battle_result.emit(victor)
+	enemy.queue_free()
+	queue_free()
 
 
 func enemyHit(dmgToPlayer : int):
@@ -75,6 +77,8 @@ func playerHit(dmgToEnemy : int):
 	enemy.hp -= dmgToEnemy
 	if !enemy.hp:
 		print(enemy.characterName + " has died!")
+		player.addMoney(enemy.moneyDrop())
+		player.inventory.add(enemy.diceDrop())
 		end(player)
 	else:
 		enemyTurn()
@@ -83,5 +87,3 @@ func getBattleHealth():
 	print(player.characterName + " Health: " + str(player.hp))
 	print(enemy.characterName + " Health: " + str(enemy.hp))
 	print("\n")
-
-

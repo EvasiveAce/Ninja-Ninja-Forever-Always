@@ -11,5 +11,5 @@ func add(dice : Dice):
 		print("Inventory is Full")
 		return null
 	inventoryArray.push_back(dice)
-	#print(dice.diceName + " has been added to your Inventory")
+	#print(str(dice.diceName) + " has been added to your Inventory")
 
