@@ -34,12 +34,9 @@ func battleStart():
 		battleStart()
 
 func turnSystem(firstAttacker : Object):
-	var playerTurnFirst : bool
 	if firstAttacker == player:
-		playerTurnFirst = true
 		playerTurn()
 	else:
-		playerTurnFirst = false
 		enemyTurn()
 
 func playerTurn():
