@@ -6,6 +6,8 @@ extends Entity
 @export var money := 0
 @export var xp := 0
 
+@export var rollAmount : int = 1
+
 var hp : int:
 	set(value):
 		hp = clamp(value, 0, max_hp)

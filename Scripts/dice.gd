@@ -6,12 +6,10 @@ extends Node2D
 @onready var sides := diceResource.sides
 @onready var modifier := diceResource.modifier
 
-var diceRoll : int:
-	get:
-		var rollNumber := randi_range(1, sides)
-		if modifier:
-			rollNumber = clamp(rollNumber + modifier, 1, rollNumber + modifier)
-		return rollNumber
+@onready var diceRoll : int
 
 func roll():
+	diceRoll = randi_range(1, sides)
+	if modifier:
+		diceRoll = clamp(diceRoll + modifier, 1, sides + modifier)
 	return diceRoll

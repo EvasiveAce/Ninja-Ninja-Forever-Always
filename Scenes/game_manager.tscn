@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://c64uq6ioqqn8y"]
+
+[ext_resource type="Script" path="res://Scripts/game_manager.gd" id="1_185n4"]
+[ext_resource type="Script" path="res://Scripts/battle_system.gd" id="3_0skpj"]
+[ext_resource type="PackedScene" uid="uid://eh81dl04wjrf" path="res://Scenes/battleUI.tscn" id="3_bfvim"]
+
+[node name="GameManager" type="Node"]
+script = ExtResource("1_185n4")
+
+[node name="BattleUI" parent="." instance=ExtResource("3_bfvim")]
+
+[node name="BattleSystem" type="Node2D" parent="."]
+script = ExtResource("3_0skpj")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.75
+
+[connection signal="eitherButtonPressed" from="BattleUI" to="." method="_on_battle_ui_either_button_pressed"]
+[connection signal="endTurnButtonPressed" from="BattleUI" to="." method="_on_battle_ui_roll_button_pressed" binds= ["endButton"]]
+[connection signal="rollButtonPressed" from="BattleUI" to="." method="_on_battle_ui_roll_button_pressed" binds= ["rollButton"]]
+[connection signal="battle_result" from="BattleSystem" to="." method="_on_battle_system_battle_result"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

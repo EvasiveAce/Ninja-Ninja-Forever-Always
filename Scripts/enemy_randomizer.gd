@@ -8,4 +8,6 @@ var enemyArray := [
 ]
 
 func getRandomEnemy():
-	return enemyArray[randi_range(0, enemyArray.size() - 1)].instantiate()
+	var enemy = enemyArray[randi_range(0, enemyArray.size() - 1)].instantiate()
+	enemy.name = "ENEMY "
+	return enemy

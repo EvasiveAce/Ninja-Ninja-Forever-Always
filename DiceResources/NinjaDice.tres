@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Dice" load_steps=2 format=3 uid="uid://cp1vs0wa44b57"]
+[gd_resource type="Resource" script_class="DiceResource" load_steps=2 format=3 uid="uid://cp1vs0wa44b57"]
 
 [ext_resource type="Script" path="res://Scripts/dice_resource.gd" id="1_myptm"]
 
