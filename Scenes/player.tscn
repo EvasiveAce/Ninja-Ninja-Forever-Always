@@ -12,7 +12,7 @@ characterName = "Ninja"
 inventory = NodePath("InventoryComponent")
 
 [node name="InventoryComponent" parent="." instance=ExtResource("2_5wtd7")]
-inventorySize = 2
+inventorySize = 1
 
 [node name="Dice" type="Node2D" parent="."]
 script = ExtResource("3_mps3v")

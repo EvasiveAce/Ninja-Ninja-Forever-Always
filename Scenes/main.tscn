@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://bnaxgjgk0wnte"]
+[gd_scene load_steps=4 format=3 uid="uid://bnaxgjgk0wnte"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_ku8eo"]
+[ext_resource type="PackedScene" uid="uid://c64uq6ioqqn8y" path="res://Scenes/game_manager.tscn" id="2_cndqd"]
 [ext_resource type="PackedScene" uid="uid://c5c5rnhg25t2r" path="res://Scenes/player.tscn" id="2_hbm3l"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ku8eo")
 
+[node name="GameManager" parent="." instance=ExtResource("2_cndqd")]
+
 [node name="Player" parent="." instance=ExtResource("2_hbm3l")]
+
+[connection signal="battleEnded" from="GameManager" to="." method="_on_game_manager_battle_ended"]

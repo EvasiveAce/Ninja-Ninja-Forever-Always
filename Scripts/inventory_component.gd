@@ -13,3 +13,5 @@ func add(dice : Dice):
 	inventoryArray.push_back(dice)
 	#print(str(dice.diceName) + " has been added to your Inventory")
 
+func getDice():
+	return inventoryArray[0]

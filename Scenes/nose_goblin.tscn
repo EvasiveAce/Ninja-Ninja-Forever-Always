@@ -14,7 +14,7 @@ characterName = "Nose Goblin"
 inventory = NodePath("InventoryComponent")
 
 [node name="InventoryComponent" parent="." instance=ExtResource("4_5v261")]
-inventorySize = 2
+inventorySize = 1
 
 [node name="Dice" type="Node2D" parent="."]
 script = ExtResource("3_sb10k")
