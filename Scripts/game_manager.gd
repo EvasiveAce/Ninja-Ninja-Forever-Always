@@ -12,9 +12,12 @@ var mainLabel = preload("res://Scenes/main_label.tscn")
 var playerLabel = preload("res://Scenes/roll_label.tscn")
 var enemyLabel = preload("res://Scenes/enemy_roll_label.tscn")
 
+var shopOption = preload("res://Scenes/shop_option.tscn")
+
 @onready var battleSystem = $BattleSystem
 
 var enemyRandomizer := EnemyRandomizer.new()
+var healingItemRandomizer := HealingItemRandomizer.new()
 
 var buttonPressed : String
 
@@ -154,22 +157,25 @@ func endTurnPhase(deathCheckEntity : Entity):
 			enemyTurnPhase()
 
 func endBattlePhase():
-	$BattleUI/UI/MarginContainer/VBoxContainer.visible = false
-	$Timer.start()
-	addLabel("%s has died!" % battleSystem.enemy.characterName, mainLabel)
-	await $Timer.timeout
-	var moneyDrop = battleSystem.enemy.moneyDrop()
-	if moneyDrop > 0:
+	if !battleSystem.player.hp:
+		addLabel("%s has died!" % battleSystem.player.characterName, mainLabel)
+	else:
+		$BattleUI/UI/MarginContainer/VBoxContainer.visible = false
 		$Timer.start()
-		addLabel("%s dropped %s gold!" % [battleSystem.enemy.characterName, moneyDrop], mainLabel)
+		addLabel("%s has died!" % battleSystem.enemy.characterName, mainLabel)
 		await $Timer.timeout
-		battleSystem.player.addMoney(moneyDrop)
-		$Timer.start()
-		addLabel("Amount of Gold: %s -> %s" % [battleSystem.player.money - moneyDrop, moneyDrop], mainLabel)
-		await $Timer.timeout
-	$BattleUI/UI/MarginContainer/VBoxContainer.visible = true
-	await $BattleUI.eitherButtonPressed
-	battleEnded.emit(battleSystem.player)
+		var moneyDrop = battleSystem.enemy.moneyDrop()
+		if moneyDrop > 0:
+			$Timer.start()
+			addLabel("%s dropped %s gold!" % [battleSystem.enemy.characterName, moneyDrop], mainLabel)
+			await $Timer.timeout
+			battleSystem.player.addMoney(moneyDrop)
+			$Timer.start()
+			addLabel("Amount of Gold: %s -> %s" % [(battleSystem.player.money - moneyDrop), battleSystem.player.money], mainLabel)
+			await $Timer.timeout
+		$BattleUI/UI/MarginContainer/VBoxContainer.visible = true
+		await $BattleUI.eitherButtonPressed
+		battleEnded.emit(battleSystem.player)
 	# 	player.inventory.add(enemy.diceDrop())
 
 func checkForCrit(arrayOfDice : Array[int]):
@@ -212,6 +218,32 @@ func damageCalculation(arrayOfDice : Array[int], entity : Entity) -> int:
 # 		else:
 # 			print("You won the 100th battle! Come back for more next update.")
 
+
+func healRoll(entity : Entity):
+	addLabel("Roll for healing", mainLabel)
+	await $BattleUI.rollButtonPressed
+	var healRollVar = entity.inventory.getDice().roll()
+	addLabel("%s healed for %s" % [entity.characterName, healRollVar], mainLabel)
+	addLabel("HP %s -> %s" % [entity.hp, entity.hp + healRollVar], mainLabel)
+	entity.hp += healRollVar
+	await $BattleUI.rollButtonPressed
+
+
+func shop(entity : Entity):
+	var maxItems := 3
+	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = false
+	$BattleUI/UI/MarginContainer/ShopContainer.visible = true
+	for i in maxItems:
+		var newShopOption = shopOption.instantiate()
+		var newHealingItem = healingItemRandomizer.getRandomHealing()
+		newShopOption.add_child(newHealingItem)
+		newShopOption.item = newHealingItem
+		$BattleUI/UI/MarginContainer/ShopContainer.add_child(newShopOption)
+		maxItems -= 1
+	##TODO: Make percentages of drop/itemchances
+	await $BattleUI.endTurnButtonPressed
+	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
+	$BattleUI/UI/MarginContainer/ShopContainer.visible = false
 
 
 

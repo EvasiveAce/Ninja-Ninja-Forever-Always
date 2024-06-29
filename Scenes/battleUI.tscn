@@ -48,10 +48,17 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Roll"
 
-[node name="EndTurnButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
+[node name="ShopContainer" type="HBoxContainer" parent="UI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/separation = 75
+
+[node name="EndTurnButton" type="Button" parent="UI/MarginContainer"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 8
 text = "End Turn"
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI"]
@@ -72,4 +79,4 @@ layout_mode = 2
 mouse_filter = 2
 
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/RollButton" to="." method="_on_roll_button_pressed"]
-[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
