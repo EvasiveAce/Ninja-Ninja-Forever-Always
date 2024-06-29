@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbavxyd4yu5c8"]
+
+[ext_resource type="Script" path="res://Scripts/healing_item.gd" id="1_lxe04"]
+[ext_resource type="Resource" uid="uid://d02m2sp6l6vlw" path="res://ItemResources/healing_item.tres" id="2_bivtc"]
+
+[node name="HealingOrb" type="Node2D"]
+script = ExtResource("1_lxe04")
+healAmount = 3
+itemResource = ExtResource("2_bivtc")
