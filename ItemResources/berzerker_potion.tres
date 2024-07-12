@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://w1l5hmjx5i3i"]
+
+[ext_resource type="Script" path="res://Scripts/item_resource.gd" id="1_85dfp"]
+
+[resource]
+script = ExtResource("1_85dfp")
+itemName = "Berzerker Potion"
+itemDescription = "+4 Modifier for 2 Turns"
+itemPrice = 7

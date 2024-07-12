@@ -18,16 +18,19 @@ var shopOption = preload("res://Scenes/shop_option.tscn")
 
 var enemyRandomizer := EnemyRandomizer.new()
 var healingItemRandomizer := HealingItemRandomizer.new()
+var buffItemRandomizer := BuffItemRandomizer.new()
+var passiveItemRandomizer := PassiveItemRandomizer.new()
 
-var buttonPressed : String
+var buttonPressed
 
 func gameManagerInit(player : Entity = null):
 	var enemyToUse = enemyRandomizer.getRandomEnemy()
 	battleSystem.battleInit(player, enemyToUse)
 	battleSystem.add_child(enemyToUse)
 
-func _on_battle_ui_roll_button_pressed(buttonPressedS : String):
+func _on_battle_ui_roll_button_pressed(buttonPressedS):
 	buttonPressed = buttonPressedS
+	print(buttonPressed)
 
 
 func startBattlePhase():
@@ -127,6 +130,7 @@ func enemyTurnPhase():
 	endTurnPhase(battleSystem.player)
 
 func playerRollPhase(arrayOfRolls : Array[int], tempAmount : int) -> Array[int]:
+	##TODO: program luck here for more crits - if you have more than 1 roll, it will be more likely to be the same
 	while tempAmount > 0:
 		$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Roll"
 		await $BattleUI.eitherButtonPressed
@@ -235,15 +239,27 @@ func shop(entity : Entity):
 	$BattleUI/UI/MarginContainer/ShopContainer.visible = true
 	for i in maxItems:
 		var newShopOption = shopOption.instantiate()
-		var newHealingItem = healingItemRandomizer.getRandomHealing()
-		newShopOption.add_child(newHealingItem)
-		newShopOption.item = newHealingItem
+		var newItem : Item
+		match maxItems:
+			3:
+				newItem = healingItemRandomizer.getRandomHealing()
+			2:
+				newItem = passiveItemRandomizer.getRandomPassive()
+			1:
+				newItem = buffItemRandomizer.getRandomBuff()
+		newShopOption.add_child(newItem)
+		newShopOption.item = newItem
 		$BattleUI/UI/MarginContainer/ShopContainer.add_child(newShopOption)
 		maxItems -= 1
 	##TODO: Make percentages of drop/itemchances
-	await $BattleUI.endTurnButtonPressed
-	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
-	$BattleUI/UI/MarginContainer/ShopContainer.visible = false
+	await $BattleUI.eitherButtonPressed
+	if buttonPressed is String:
+		$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
+		$BattleUI/UI/MarginContainer/ShopContainer.visible = false
+	else:
+		pass
+
+	
 
 
 

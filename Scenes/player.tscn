@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5c5rnhg25t2r"]
+[gd_scene load_steps=6 format=3 uid="uid://c5c5rnhg25t2r"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_qq125"]
 [ext_resource type="PackedScene" uid="uid://b5u2qhhordtlc" path="res://Scenes/inventory_component.tscn" id="2_5wtd7"]
 [ext_resource type="Resource" uid="uid://cp1vs0wa44b57" path="res://DiceResources/NinjaDice.tres" id="3_cw6bh"]
 [ext_resource type="Script" path="res://Scripts/dice.gd" id="3_mps3v"]
+[ext_resource type="PackedScene" uid="uid://cgbjkpnwht5es" path="res://Scenes/Items/Passives/rabbit's_foot.tscn" id="5_4xlqy"]
 
 [node name="Player" type="Node2D" node_paths=PackedStringArray("inventory")]
 script = ExtResource("1_qq125")
 max_hp = 20
+rollAmount = 4
 characterName = "Ninja"
 inventory = NodePath("InventoryComponent")
 
@@ -17,3 +19,7 @@ inventorySize = 1
 [node name="Dice" type="Node2D" parent="."]
 script = ExtResource("3_mps3v")
 diceResource = ExtResource("3_cw6bh")
+
+[node name="Passives" type="Node2D" parent="."]
+
+[node name="Rabbit\'s Foot" parent="Passives" instance=ExtResource("5_4xlqy")]

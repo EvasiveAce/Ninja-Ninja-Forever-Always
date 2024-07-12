@@ -1,0 +1,3 @@
+extends HBoxContainer
+
+signal itemButtonPressed
