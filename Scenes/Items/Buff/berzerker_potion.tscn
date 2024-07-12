@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://chhcxehv42uxn"]
+
+[ext_resource type="Script" path="res://Scripts/buff_item.gd" id="1_pqc7i"]
+[ext_resource type="Resource" uid="uid://w1l5hmjx5i3i" path="res://ItemResources/berzerker_potion.tres" id="2_qxyig"]
+
+[node name="BerzerkerPotion" type="Node2D"]
+script = ExtResource("1_pqc7i")
+buffAmount = 4
+buffTurns = 2
+itemResource = ExtResource("2_qxyig")

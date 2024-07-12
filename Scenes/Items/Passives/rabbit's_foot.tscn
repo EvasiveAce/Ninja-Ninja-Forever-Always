@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgbjkpnwht5es"]
+
+[ext_resource type="Script" path="res://Scripts/rabbit's_foot.gd" id="1_q0aqa"]
+[ext_resource type="Resource" uid="uid://nh2r0o1uaqbi" path="res://ItemResources/rabbit's_foot.tres" id="2_a8eq5"]
+
+[node name="Rabbit\'s Foot" type="Node2D"]
+script = ExtResource("1_q0aqa")
+itemResource = ExtResource("2_a8eq5")

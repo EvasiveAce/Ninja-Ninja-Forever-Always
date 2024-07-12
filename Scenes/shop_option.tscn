@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/shop_option.gd" id="1_qkwww"]
 
-[node name="ShopOption" type="Button" node_paths=PackedStringArray("item")]
+[node name="ShopOption" type="Button"]
 custom_minimum_size = Vector2(100, 100)
 offset_left = 318.0
 offset_top = 147.0
@@ -10,7 +10,6 @@ offset_right = 418.0
 offset_bottom = 247.0
 size_flags_vertical = 0
 script = ExtResource("1_qkwww")
-item = NodePath("")
 
 [node name="ItemLabel" type="Label" parent="."]
 custom_minimum_size = Vector2(100, 0)
@@ -39,3 +38,5 @@ offset_right = 100.0
 offset_bottom = 83.0
 text = "Item 1"
 horizontal_alignment = 1
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

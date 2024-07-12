@@ -6,6 +6,8 @@ extends Entity
 @export var money := 0
 @export var xp := 0
 
+@export var luck := 0
+
 @export var rollAmount : int = 1
 
 var hp : int:
@@ -28,3 +30,9 @@ func postBattleWinHeal():
 func addMoney(moneyToAdd : int):
 	print(str(characterName) + " received $" + str(moneyToAdd))
 	money += moneyToAdd
+
+func getPassives():
+	pass
+
+func getDice():
+	return $Dice

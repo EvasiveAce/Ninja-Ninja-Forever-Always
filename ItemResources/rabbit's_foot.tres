@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://nh2r0o1uaqbi"]
+
+[ext_resource type="Script" path="res://Scripts/item_resource.gd" id="1_uef3e"]
+
+[resource]
+script = ExtResource("1_uef3e")
+itemName = "Rabbit's Foot"
+itemDescription = "+ Luck"
+itemPrice = 10

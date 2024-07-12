@@ -9,3 +9,6 @@ func _ready():
 	$ItemLabel/ItemCost.text = "¢%s" % item.itemPrice
 
 
+func _on_pressed():
+	get_parent().emit_signal("itemButtonPressed", item)
+
