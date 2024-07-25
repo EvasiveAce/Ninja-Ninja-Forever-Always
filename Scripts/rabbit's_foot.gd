@@ -1,7 +1,7 @@
-class_name RabbitsFood
+class_name RabbitsFoot
 
 extends Item
 
 
-func onPurchase(player : Entity):
+func on_add(player : Entity):
 	player.luck += 1

@@ -16,9 +16,19 @@ func _on_game_manager_battle_ended(entity):
 	if dungeonSize == 8 or dungeonSize == 2:
 		await $GameManager.healRoll(entity)
 		$GameManager.removeLabels()
-	if dungeonSize == 9 or dungeonSize == 4:
+	if dungeonSize == 6 or dungeonSize == 4:
 		await $GameManager.shop(entity)
 		$GameManager.removeLabels()
-	$GameManager.gameManagerInit(entity)
-	$GameManager.removeLabels()
-	$GameManager.startBattlePhase()
+	if dungeonSize == 5:
+		await $GameManager.item_drop(entity)
+		$GameManager.removeLabels()
+	if dungeonSize == 1:
+		$GameManager.gameManagerInit(entity, true)
+		$GameManager.removeLabels()
+		$GameManager.startBattlePhase()
+	elif dungeonSize > 1:
+		$GameManager.gameManagerInit(entity)
+		$GameManager.removeLabels()
+		$GameManager.startBattlePhase()
+	else:
+		$GameManager.addLabel("Game over! You win!!", $GameManager.mainLabel)

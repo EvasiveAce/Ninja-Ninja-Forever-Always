@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2wps5nmdw8a2"]
+
+[ext_resource type="Theme" uid="uid://bhiaecw0qybq7" path="res://Themes/HPBarPlayer.tres" id="1_1305y"]
+[ext_resource type="Script" path="res://Scripts/hp_bar.gd" id="2_yeipp"]
+
+[node name="HPBar" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -480.0
+offset_bottom = -270.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_1305y")
+script = ExtResource("2_yeipp")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_right = 136.0
+offset_bottom = 8.0
+max_value = 5.0
+step = 1.0
+value = 1.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 7.0
+offset_right = 43.0
+offset_bottom = 30.0

@@ -3,12 +3,15 @@ class_name Player
 extends Entity
 
 @export var max_hp := 0
-@export var money := 0
+@export var money := 3
 @export var xp := 0
 
 @export var luck := 0
 
 @export var rollAmount : int = 1
+
+var buffAmount := 0
+var buffTurns := 0 
 
 var hp : int:
 	set(value):
@@ -36,3 +39,13 @@ func getPassives():
 
 func getDice():
 	return $Dice
+
+func addPassive(item : Item):
+	item.reparent($Passives)
+	item.on_add(self)
+
+func useHealing(item : Item):
+	return item.on_use(self)
+
+func useBuff(item : Item):
+	return item.on_use(self)
