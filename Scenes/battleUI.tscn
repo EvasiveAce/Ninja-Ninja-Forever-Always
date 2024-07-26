@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://eh81dl04wjrf"]
+[gd_scene load_steps=8 format=3 uid="uid://eh81dl04wjrf"]
 
 [ext_resource type="Script" path="res://Scripts/battleUI.gd" id="1_ysbu8"]
+[ext_resource type="PackedScene" uid="uid://br87t0deghdxg" path="res://Scenes/Backgrounds/ice_background.tscn" id="2_c5o12"]
 [ext_resource type="Script" path="res://Scripts/ShopContainer.gd" id="2_evov3"]
 [ext_resource type="Texture2D" uid="uid://c5pha03w8f0p7" path="res://Sprites/UI/TempBackground.png" id="2_umnyg"]
 [ext_resource type="PackedScene" uid="uid://d2wps5nmdw8a2" path="res://Scenes/hp_bar.tscn" id="4_hmane"]
@@ -19,10 +20,31 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ysbu8")
 
+[node name="IceBackground" parent="." instance=ExtResource("2_c5o12")]
+offset = Vector2(45, -15)
+scale = Vector2(0.75, 0.75)
+transform = Transform2D(0.75, 0, 0, 0.75, 45, -15)
+
 [node name="Background" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(240, 135)
 texture = ExtResource("2_umnyg")
+
+[node name="PlayerHPBar" parent="." instance=ExtResource("4_hmane")]
+layout_mode = 1
+offset_left = 102.0
+offset_top = 131.0
+offset_right = -858.0
+offset_bottom = -409.0
+
+[node name="EnemyHPBar" parent="." instance=ExtResource("4_hmane")]
+layout_mode = 1
+offset_left = 242.0
+offset_top = 131.0
+offset_right = -718.0
+offset_bottom = -409.0
+HPBarTheme = ExtResource("5_hb4co")
+RightLeft = 1
 
 [node name="UI" type="Panel" parent="."]
 layout_mode = 1
@@ -87,22 +109,6 @@ theme_override_constants/margin_bottom = 20
 [node name="TextRows" type="VBoxContainer" parent="UI/MarginContainer2"]
 layout_mode = 2
 mouse_filter = 2
-
-[node name="PlayerHPBar" parent="." instance=ExtResource("4_hmane")]
-layout_mode = 1
-offset_left = 102.0
-offset_top = 131.0
-offset_right = -858.0
-offset_bottom = -409.0
-
-[node name="EnemyHPBar" parent="." instance=ExtResource("4_hmane")]
-layout_mode = 1
-offset_left = 242.0
-offset_top = 131.0
-offset_right = -718.0
-offset_bottom = -409.0
-HPBarTheme = ExtResource("5_hb4co")
-RightLeft = 1
 
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/RollButton" to="." method="_on_roll_button_pressed"]
 [connection signal="itemButtonPressed" from="UI/MarginContainer/ShopContainer" to="." method="_on_shop_container_item_button_pressed"]

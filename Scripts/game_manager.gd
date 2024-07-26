@@ -38,7 +38,7 @@ func _on_battle_ui_roll_button_pressed(buttonPressedS):
 
 
 func startBattlePhase():
-	$BattleUI/PlayerHPBar.set_max(battleSystem.player.max_hp)
+	$BattleUI/PlayerHPBar.set_max(battleSystem.player.hp)
 	updateHPBar(battleSystem.player.max_hp, true)
 	$BattleUI/EnemyHPBar.set_max(battleSystem.enemy.hp)
 	updateHPBar(battleSystem.enemy.hp, false)
