@@ -6,6 +6,7 @@ signal battleEnded(entity : Entity)
 
 var battlesWon := 0 
 
+@onready var playerTextRows = $BattleUI/UI/PlayerRollContainer/ScrollContainer/VBoxContainer
 @onready var textRows = $BattleUI/UI/MarginContainer2/TextRows
 
 var mainLabel = preload("res://Scenes/main_label.tscn")
@@ -38,8 +39,8 @@ func _on_battle_ui_roll_button_pressed(buttonPressedS):
 
 
 func startBattlePhase():
-	$BattleUI/PlayerHPBar.set_max(battleSystem.player.hp)
-	updateHPBar(battleSystem.player.max_hp, true)
+	$BattleUI/PlayerHPBar.set_max(battleSystem.player.max_hp)
+	updateHPBar(battleSystem.player.hp, true)
 	$BattleUI/EnemyHPBar.set_max(battleSystem.enemy.hp)
 	updateHPBar(battleSystem.enemy.hp, false)
 	encounterBattlePhase()
@@ -58,9 +59,9 @@ func speedBattlePhase():
 	await $BattleUI.rollButtonPressed
 	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
 	var speedRollVictor = battleSystem.speedRoll()
-	addLabel("Ninja rolled a %s" % battleSystem.player.inventory.getDice().diceRoll, playerLabel)
+	addLabel("%s" % battleSystem.player.inventory.getDice().diceRoll, playerLabel)
 	await $BattleUI.rollButtonPressed
-	addLabel("%s rolled a %d" % [battleSystem.enemy.characterName, battleSystem.enemy.inventory.getDice().diceRoll], enemyLabel)
+	addLabel("%d" % [battleSystem.enemy.inventory.getDice().diceRoll], enemyLabel)
 	await $BattleUI.rollButtonPressed
 	addLabel("%s goes first!" % speedRollVictor.characterName, mainLabel)
 	await $BattleUI.rollButtonPressed
@@ -72,12 +73,19 @@ func speedBattlePhase():
 
 func addLabel(text : String, typeOfLabel) -> void:
 	if !text.is_empty():
-		var newLabel = typeOfLabel.instantiate()
-		newLabel.text = text
-		textRows.add_child(newLabel)
+		if typeOfLabel == playerLabel:
+			var newLabel = typeOfLabel.instantiate()
+			newLabel.text = text
+			playerTextRows.add_child(newLabel)
+		else:
+			var newLabel = typeOfLabel.instantiate()
+			newLabel.text = text
+			textRows.add_child(newLabel)
 
 func removeLabels() -> void:
 	for child in textRows.get_children():
+		child.queue_free()
+	for child in playerTextRows.get_children():
 		child.queue_free()
 
 func buffCheck():
@@ -96,11 +104,11 @@ func playerTurnPhase():
 	removeLabels()
 	addLabel("Attack Phase: Remaining rolls: %s" % (arrayOfRolls.size() - tempPlayerRollAmount), mainLabel)
 	for dice in arrayOfRolls:
-		addLabel("%s rolled a %d" % [battleSystem.player.characterName, dice], playerLabel)
+		addLabel("%d" % [dice], playerLabel)
 	await $BattleUI.rollButtonPressed
 	var damageToDeal = damageCalculation(arrayOfRolls, battleSystem.player)
 	await $BattleUI.rollButtonPressed
-	addLabel("%s's HP %s -> %s" % [battleSystem.enemy.characterName, battleSystem.enemy.hp, battleSystem.enemy.hp - damageToDeal], playerLabel)
+	#addLabel("%s's HP %s -> %s" % [battleSystem.enemy.characterName, battleSystem.enemy.hp, battleSystem.enemy.hp - damageToDeal], playerLabel)
 	updateHPBar(battleSystem.enemy.hp - damageToDeal, false)
 	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
 	await $BattleUI.rollButtonPressed
@@ -133,7 +141,7 @@ func enemyTurnPhase():
 	addLabel("Attack Phase: Remaining rolls: %s" % (tempEnemyAmountRoll - arrayOfRolls.size()), mainLabel)
 	for dice in arrayOfRolls:
 		$Timer.start()
-		addLabel("%s rolled a %d" % [battleSystem.enemy.characterName, dice], enemyLabel)
+		addLabel("%d" % [dice], enemyLabel)
 		await $Timer.timeout
 	var damageToDeal = damageCalculation(arrayOfRolls, battleSystem.enemy)
 	await $Timer.timeout
@@ -156,7 +164,7 @@ func playerRollPhase(arrayOfRolls : Array[int], tempAmount : int, buffAmount : i
 		if !arrayOfRolls.is_empty():
 			addLabel("Attack Phase: Remaining rolls: %s" % tempAmount, mainLabel)
 			for dice in arrayOfRolls:
-				addLabel("%s rolled a %d" % [battleSystem.player.characterName, dice], playerLabel)
+				addLabel("%d" % [dice], playerLabel)
 		else:
 			addLabel("Attack Phase: Remaining rolls: %s" % tempAmount, mainLabel)
 		await $BattleUI.eitherButtonPressed
@@ -167,7 +175,7 @@ func playerRollPhase(arrayOfRolls : Array[int], tempAmount : int, buffAmount : i
 			var tempRoll = battleSystem.player.inventory.getDice().diceRoll
 			if buffAmount > 0:
 				tempRoll += buffAmount
-			addLabel("%s rolled a %d" % [battleSystem.player.characterName, tempRoll], playerLabel)
+			addLabel("%d" % [tempRoll], playerLabel)
 			arrayOfRolls.append(tempRoll)
 		elif buttonPressed == "endButton":
 			break
@@ -225,10 +233,10 @@ func damageCalculation(arrayOfDice : Array[int], entity : Entity) -> int:
 		else:
 			addLabel("CRITICAL HIT!!", enemyLabel)
 		damageToDeal *= arrayOfDice.size()
-	if entity == battleSystem.player:
-		addLabel("%s dealt %s" % [entity.characterName, damageToDeal], playerLabel)
-	else:
-		addLabel("%s dealt %s" % [entity.characterName, damageToDeal], enemyLabel)
+	#if entity == battleSystem.player:
+		#addLabel("%s dealt %s" % [entity.characterName, damageToDeal], playerLabel)
+	#else:
+		#addLabel("%s dealt %s" % [entity.characterName, damageToDeal], enemyLabel)
 	return damageToDeal
 
 func updateHPBar(valueToSet : int, player : bool):
@@ -258,7 +266,8 @@ func healRoll(entity : Entity):
 	await $BattleUI.rollButtonPressed
 	var healRollVar = entity.inventory.getDice().roll()
 	addLabel("%s healed for %s" % [entity.characterName, healRollVar], mainLabel)
-	addLabel("HP %s -> %s" % [entity.hp, entity.hp + healRollVar], mainLabel)
+	#addLabel("HP %s -> %s" % [entity.hp, entity.hp + healRollVar], mainLabel) 
+	#TODO: Add HP Bar interaction
 	#TODO: Clamp
 	entity.hp += healRollVar
 	await $BattleUI.rollButtonPressed
@@ -303,7 +312,7 @@ func shop_purchase_attempt(entity : Entity):
 					$BattleUI/UI/MarginContainer/ShopContainer.visible = false
 					addLabel("%s bought %s for %s" % [entity.characterName, buttonPressed.itemName, buttonPressed.itemPrice], mainLabel)
 					addLabel("%s healed for %s" % [entity.characterName, amountHealed], mainLabel)
-					addLabel("HP %s -> %s" % [entity.hp, entity.hp + amountHealed], mainLabel)
+					#TODO: Add HP Bar interaction
 				"BuffItem":
 					var buffAmountAndTurns = entity.useBuff(buttonPressed)
 					$BattleUI/UI/MarginContainer/ShopContainer.visible = false

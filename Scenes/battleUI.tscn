@@ -110,6 +110,25 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 mouse_filter = 2
 
+[node name="PlayerRollContainer" type="MarginContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = 46.0
+offset_right = 200.0
+offset_bottom = -292.0
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/PlayerRollContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PlayerRollContainer/ScrollContainer"]
+layout_mode = 2
+
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/RollButton" to="." method="_on_roll_button_pressed"]
 [connection signal="itemButtonPressed" from="UI/MarginContainer/ShopContainer" to="." method="_on_shop_container_item_button_pressed"]
 [connection signal="pressed" from="UI/MarginContainer/EndTurnButton" to="." method="_on_end_turn_button_pressed"]
