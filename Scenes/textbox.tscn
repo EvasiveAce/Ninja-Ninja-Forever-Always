@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dulgx6658a325"]
+[gd_scene load_steps=4 format=3 uid="uid://dulgx6658a325"]
 
 [ext_resource type="Script" path="res://Scripts/text_box.gd" id="1_qeao3"]
 [ext_resource type="FontFile" uid="uid://bpahbhn01mt3o" path="res://Kenney Pixel.ttf" id="2_jq3r5"]
@@ -10,8 +10,6 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_esmm2"]
 
 [node name="Textbox" type="CanvasLayer"]
 script = ExtResource("1_qeao3")
@@ -40,11 +38,6 @@ theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
-
-[node name="Panel" type="Panel" parent="TextboxContainer/MarginContainer"]
-visible = false
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_esmm2")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TextboxContainer/MarginContainer"]
 layout_mode = 2
