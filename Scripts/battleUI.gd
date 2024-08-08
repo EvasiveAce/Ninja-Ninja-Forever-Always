@@ -1,22 +1,25 @@
 extends Control
 
-signal rollButtonPressed
-signal endTurnButtonPressed
+
 signal itemButtonPressed(item : Item)
 
+signal rollOption
+signal endOption
+signal eitherOption
 
-signal eitherButtonPressed
-
-func _on_roll_button_pressed():
-	rollButtonPressed.emit()
-	eitherButtonPressed.emit()
-
-
-func _on_end_turn_button_pressed():
-	endTurnButtonPressed.emit()
-	eitherButtonPressed.emit()
-
+signal textFinished
 
 func _on_shop_container_item_button_pressed(item : Item):
 	itemButtonPressed.emit(item)
-	eitherButtonPressed.emit()
+
+
+func _on_menubox_option_chosen(extra_arg_0 : String):
+	if extra_arg_0 == "Roll":
+		rollOption.emit("Roll")
+		eitherOption.emit()
+	elif extra_arg_0 == "EndTurn":
+		endOption.emit("EndTurn")
+		eitherOption.emit()
+
+func _on_textbox_text_finished():
+	textFinished.emit()
