@@ -7,6 +7,7 @@ const CHAR_READ_RATE = .025
 @onready var end_symbol = $TextboxContainer/MarginContainer/HBoxContainer/End
 @onready var label = $TextboxContainer/MarginContainer/HBoxContainer/Label
 
+signal textFinished
 
 ##
 # Credit to jontopielski on GitHub for this text box code and tutorial. 
@@ -58,6 +59,8 @@ func _process(_delta):
 		"State.READY":
 			if !text_queue.is_empty():
 				display_text()
+			else:
+				textFinished.emit()
 		"State.READING":
 			##TODO: Sound for each character
 			# if label.visible_characters != -1:
@@ -73,5 +76,5 @@ func _process(_delta):
 				label.visible_characters = -1
 				end_symbol.text = "<-"
 				change_state("State.READY")
-				if text_queue.is_empty():
-					hide_textbox()
+				#if text_queue.is_empty():
+					#hide_textbox()

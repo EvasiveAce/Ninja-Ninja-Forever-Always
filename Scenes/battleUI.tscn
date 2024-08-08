@@ -80,4 +80,5 @@ script = ExtResource("2_evov3")
 [node name="Menubox" parent="." instance=ExtResource("8_mbkmc")]
 
 [connection signal="itemButtonPressed" from="UI/MarginContainer/ShopContainer" to="." method="_on_shop_container_item_button_pressed"]
+[connection signal="textFinished" from="Textbox" to="." method="_on_textbox_text_finished"]
 [connection signal="optionChosen" from="Menubox" to="." method="_on_menubox_option_chosen"]

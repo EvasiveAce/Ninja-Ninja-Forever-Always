@@ -15,9 +15,9 @@ script = ExtResource("3_0skpj")
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.75
 
-[connection signal="eitherButtonPressed" from="BattleUI" to="." method="_on_battle_ui_either_button_pressed"]
-[connection signal="endTurnButtonPressed" from="BattleUI" to="." method="_on_battle_ui_roll_button_pressed" binds= ["endButton"]]
+[connection signal="endOption" from="BattleUI" to="." method="_on_option"]
 [connection signal="itemButtonPressed" from="BattleUI" to="." method="_on_battle_ui_roll_button_pressed"]
-[connection signal="rollButtonPressed" from="BattleUI" to="." method="_on_battle_ui_roll_button_pressed" binds= ["rollButton"]]
+[connection signal="rollOption" from="BattleUI" to="." method="_on_option"]
+[connection signal="textFinished" from="BattleUI" to="." method="_on_battle_ui_text_finished"]
 [connection signal="battle_result" from="BattleSystem" to="." method="_on_battle_system_battle_result"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

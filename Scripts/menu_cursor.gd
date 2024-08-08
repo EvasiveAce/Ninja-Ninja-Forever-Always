@@ -24,7 +24,7 @@ func _process(_delta):
 		set_cursor_from_index(round(cursor_index + input.y))
 	
 	##TODO: ui select if needed here
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept") and get_parent().isActive:
 		var current_menu_item := get_menu_item_at_index(cursor_index)
 		if current_menu_item != null:
 			if current_menu_item.has_method("cursor_select"):

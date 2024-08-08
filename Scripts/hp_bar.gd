@@ -13,7 +13,10 @@ func _ready():
 
 
 func update_bar(newValue : int):
+	var tween = get_tree().create_tween()
+	tween.tween_property($ProgressBar, "value", newValue, 1).from($ProgressBar.value + newValue)
 	$ProgressBar.value = newValue
+	
 
 func set_max(newValue : int):
 	$ProgressBar.max_value = newValue

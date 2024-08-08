@@ -21,16 +21,10 @@ func startBattle():
 func speedRoll():
 	var speedRollVar = [player.attackRoll(), enemy.attackRoll()]
 	if speedRollVar[0] > speedRollVar[1]:
-		print(player.characterName + " goes first!")
-		print("\n")
 		return player
 	elif speedRollVar[0] < speedRollVar[1]:
-		print(enemy.characterName + " goes first!")
-		print("\n")
 		return enemy
 	else:
-		print("Reroll!!")
-		print("\n")
 		return speedRoll()
 
 func turnSystem(firstAttacker : Object):

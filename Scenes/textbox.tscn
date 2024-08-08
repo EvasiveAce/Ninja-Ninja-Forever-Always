@@ -4,7 +4,7 @@
 [ext_resource type="FontFile" uid="uid://bpahbhn01mt3o" path="res://Kenney Pixel.ttf" id="2_jq3r5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mrp2"]
-bg_color = Color(0, 0, 0, 1)
+bg_color = Color(0.056745, 0.0403, 0.13, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2

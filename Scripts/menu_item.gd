@@ -1,6 +1,6 @@
 extends Label
 
-signal cursor_selected()
+signal cursor_selected(nameToSignal : String)
 
 func cursor_select() -> void:
-	emit_signal("cursor_selected")
+	cursor_selected.emit(name)

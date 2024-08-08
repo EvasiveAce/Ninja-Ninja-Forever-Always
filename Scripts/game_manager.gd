@@ -6,127 +6,150 @@ signal battleEnded(entity : Entity)
 
 var battlesWon := 0 
 
-@onready var playerTextRows = $BattleUI/UI/PlayerRollContainer/ScrollContainer/VBoxContainer
-@onready var textRows = $BattleUI/UI/MarginContainer2/TextRows
-
-var mainLabel = preload("res://Scenes/main_label.tscn")
-var playerLabel = preload("res://Scenes/roll_label.tscn")
-var enemyLabel = preload("res://Scenes/enemy_roll_label.tscn")
 
 var shopOption = preload("res://Scenes/shop_option.tscn")
 
+
+############ Signal Variables
+
+@onready var rollOption = $BattleUI.rollOption
+@onready var endOption = $BattleUI.endOption
+@onready var eitherOption = $BattleUI.eitherOption
+
+@onready var textFinished = $BattleUI.textFinished
+
+var optionChosen
+
+#####################
+
+############ BattleSystem Variables
+
 @onready var battleSystem = $BattleSystem
+var player
+var enemy
+
+#####################
+
+############ Text Variables
+
+@onready var textBox = $BattleUI/Textbox
+@onready var menuBox = $BattleUI/Menubox
+
+#####################
+
+############ HealthBar Variables
+
+@onready var playerHPBar = $BattleUI/PlayerHPBar
+@onready var enemyHPBar = $BattleUI/EnemyHPBar
+
+#####################
 
 var enemyRandomizer := EnemyRandomizer.new()
 var healingItemRandomizer := HealingItemRandomizer.new()
 var buffItemRandomizer := BuffItemRandomizer.new()
 var passiveItemRandomizer := PassiveItemRandomizer.new()
 
-var buttonPressed
-
-func gameManagerInit(player : Entity = null, isBoss : bool = false):
+func gameManagerInit(playerInit : Entity = null, isBoss : bool = false):
 	var enemyToUse
 	if !isBoss:
 		enemyToUse = enemyRandomizer.getRandomEnemy()
 	else:
 		enemyToUse = enemyRandomizer.getBossEnemy()
-	battleSystem.battleInit(player, enemyToUse)
+	battleSystem.battleInit(playerInit, enemyToUse)
 	battleSystem.add_child(enemyToUse)
-
-func _on_battle_ui_roll_button_pressed(buttonPressedS):
-	buttonPressed = buttonPressedS
-	print(buttonPressed)
-
+	player = $BattleSystem.player
+	enemy = $BattleSystem.enemy
+	
+func _on_option(extra_arg_0 : String):
+	optionChosen = extra_arg_0
 
 func startBattlePhase():
-	$BattleUI/PlayerHPBar.set_max(battleSystem.player.max_hp)
-	updateHPBar(battleSystem.player.hp, true)
-	$BattleUI/EnemyHPBar.set_max(battleSystem.enemy.hp)
-	updateHPBar(battleSystem.enemy.hp, false)
+	playerHPBar.set_max(player.max_hp)
+	updateHPBar(player.hp, true)
+	enemyHPBar.set_max(enemy.hp)
+	updateHPBar(enemy.hp, false)
 	encounterBattlePhase()
-	await $BattleUI.rollButtonPressed
-	removeLabels()
+	#removeLabels()
 	speedBattlePhase()
 
 func encounterBattlePhase():
-	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Battle!"
-	addLabel("You encounter a %s" % battleSystem.enemy.characterName, mainLabel)
+	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Battle!"
+	textBox.queue_text("You encounter a %s" % enemy.characterName)
 
 
 func speedBattlePhase():
-	addLabel("Roll for speed!", mainLabel)
-	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Roll"
-	await $BattleUI.rollButtonPressed
-	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
+	textBox.queue_text("Roll for speed!")
+	await textFinished
+	menuBox._show_menu_box(true)
+	await rollOption
+	menuBox._hide_menu_box(false)
 	var speedRollVictor = battleSystem.speedRoll()
-	addLabel("%s" % battleSystem.player.inventory.getDice().diceRoll, playerLabel)
-	await $BattleUI.rollButtonPressed
-	addLabel("%d" % [battleSystem.enemy.inventory.getDice().diceRoll], enemyLabel)
-	await $BattleUI.rollButtonPressed
-	addLabel("%s goes first!" % speedRollVictor.characterName, mainLabel)
-	await $BattleUI.rollButtonPressed
-	removeLabels()
+	textBox.queue_text("%s rolled a %s" % [player.name, player.inventory.getDice().diceRoll])
+	textBox.queue_text("%s rolled a %s" % [enemy.characterName, enemy.inventory.getDice().diceRoll])
+	textBox.queue_text("%s goes first!" % speedRollVictor.characterName)
+	await textFinished	
 	if speedRollVictor == battleSystem.player:
 		playerTurnPhase()
 	else:
 		enemyTurnPhase()
 
-func addLabel(text : String, typeOfLabel) -> void:
-	if !text.is_empty():
-		if typeOfLabel == playerLabel:
-			var newLabel = typeOfLabel.instantiate()
-			newLabel.text = text
-			playerTextRows.add_child(newLabel)
-		else:
-			var newLabel = typeOfLabel.instantiate()
-			newLabel.text = text
-			textRows.add_child(newLabel)
 
-func removeLabels() -> void:
-	for child in textRows.get_children():
-		child.queue_free()
-	for child in playerTextRows.get_children():
-		child.queue_free()
+# func addLabel(text : String, typeOfLabel) -> void:
+# 	if !text.is_empty():
+# 		if typeOfLabel == playerLabel:
+# 			var newLabel = typeOfLabel.instantiate()
+# 			newLabel.text = text
+# 			playerTextRows.add_child(newLabel)
+# 		else:
+# 			var newLabel = typeOfLabel.instantiate()
+# 			newLabel.text = text
+# 			textRows.add_child(newLabel)
+
+# func removeLabels() -> void:
+# 	for child in textRows.get_children():
+# 		child.queue_free()
+# 	for child in playerTextRows.get_children():
+# 		child.queue_free()
 
 func buffCheck():
-	if battleSystem.player.buffTurns > 0:
-		battleSystem.player.buffTurns -= 1
-		return battleSystem.player.buffAmount
+	if player.buffTurns > 0:
+		player.buffTurns -= 1
+		return player.buffAmount
 	else:
 		return 0
 
 func playerTurnPhase():
-	var tempPlayerRollAmount = battleSystem.player.rollAmount
+	var tempPlayerRollAmount = player.rollAmount
 	var arrayOfRolls : Array[int] = []
 	arrayOfRolls = await playerRollPhase(arrayOfRolls, tempPlayerRollAmount, buffCheck())
-	print(arrayOfRolls)
-	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
-	removeLabels()
-	addLabel("Attack Phase: Remaining rolls: %s" % (arrayOfRolls.size() - tempPlayerRollAmount), mainLabel)
+	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
+	#textBox.queue_text("Attack Phase: Remaining rolls: %s" % (arrayOfRolls.size() - tempPlayerRollAmount))
+	var tempDisplay = " "
+	var tempSize = arrayOfRolls.size()
 	for dice in arrayOfRolls:
-		addLabel("%d" % [dice], playerLabel)
-	await $BattleUI.rollButtonPressed
-	var damageToDeal = damageCalculation(arrayOfRolls, battleSystem.player)
-	await $BattleUI.rollButtonPressed
+		tempSize -= 1
+		if tempSize != 0:
+			tempDisplay += "%s + " % dice
+		else:
+			tempDisplay += "%s = %s" % [dice, damageCalculation(arrayOfRolls, player)] 
+	textBox.queue_text(tempDisplay)
+	var damageToDeal = damageCalculation(arrayOfRolls, player)
+	await textFinished
 	#addLabel("%s's HP %s -> %s" % [battleSystem.enemy.characterName, battleSystem.enemy.hp, battleSystem.enemy.hp - damageToDeal], playerLabel)
-	updateHPBar(battleSystem.enemy.hp - damageToDeal, false)
-	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
-	await $BattleUI.rollButtonPressed
-	removeLabels()
+	updateHPBar(enemy.hp - damageToDeal, false)
+	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
 	battleSystem.playerHit(damageToDeal)
-	endTurnPhase(battleSystem.enemy)
+	endTurnPhase(enemy)
 
 func enemyTurnPhase():
-	$BattleUI/UI/MarginContainer/VBoxContainer.visible = false
-	var tempEnemyAmountRoll = battleSystem.enemy.statSheet.rollAmount
-	print(tempEnemyAmountRoll)
+	var tempEnemyAmountRoll = enemy.statSheet.rollAmount
 	var arrayOfRolls : Array[int] = []
 	for i in tempEnemyAmountRoll:
-		arrayOfRolls.append(battleSystem.enemy.inventory.getDice().roll())
+		arrayOfRolls.append(enemy.inventory.getDice().roll())
 		var tempDamage = 0
 		for roll in arrayOfRolls:
 			tempDamage += roll
-		if tempDamage >= battleSystem.player.hp:
+		if tempDamage >= player.hp:
 			break
 		if arrayOfRolls.size() >= 2:
 			var crit = true
@@ -136,80 +159,82 @@ func enemyTurnPhase():
 					crit = false
 			if crit == true:
 				break
-	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
-	removeLabels()
-	addLabel("Attack Phase: Remaining rolls: %s" % (tempEnemyAmountRoll - arrayOfRolls.size()), mainLabel)
+	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
+	textBox.queue_text("Enemy Remaining rolls: %s" % (tempEnemyAmountRoll - arrayOfRolls.size()))
 	for dice in arrayOfRolls:
-		$Timer.start()
-		addLabel("%d" % [dice], enemyLabel)
-		await $Timer.timeout
-	var damageToDeal = damageCalculation(arrayOfRolls, battleSystem.enemy)
-	await $Timer.timeout
-	addLabel("%s's HP %s -> %s" % [battleSystem.player.characterName, battleSystem.player.hp, battleSystem.player.hp - damageToDeal], enemyLabel)
-	updateHPBar(battleSystem.player.hp - damageToDeal, true)
-	$BattleUI/UI/MarginContainer/VBoxContainer.visible = true
-	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
-	await $BattleUI.rollButtonPressed
-	removeLabels()
+		#$Timer.start()
+		textBox.queue_text("%s rolled a %d" % [enemy.characterName, dice])
+		#await $Timer.timeout
+	var damageToDeal = damageCalculation(arrayOfRolls, enemy)
+	#await $Timer.timeout
+	textBox.queue_text("%s's HP %s -> %s" % [player.characterName, player.hp, player.hp - damageToDeal])
+	updateHPBar(player.hp - damageToDeal, true)
+	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
+	await textFinished
 	battleSystem.enemyHit(damageToDeal)
-	endTurnPhase(battleSystem.player)
+	endTurnPhase(player)
 
 func playerRollPhase(arrayOfRolls : Array[int], tempAmount : int, buffAmount : int) -> Array[int]:
 	##TODO: program luck here for more crits - if you have more than 1 roll, it will be more likely to be the same
+		#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Roll"
+		#await eitherOption
+		# if !arrayOfRolls.is_empty():
+		# 	textBox.queue_text("Attack Phase: Remaining rolls: %s %" % tempAmount)
+		# 	# for dice in arrayOfRolls:
+		# 	# 	textBox.queue_text("%d" % dice)
+		# else:
+		# 	textBox.queue_text("Attack Phase: Remaining rolls: %s" % tempAmount)
 	while tempAmount > 0:
-		$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Roll"
-		await $BattleUI.eitherButtonPressed
-		removeLabels()
-		battleSystem.player.inventory.getDice().roll()
-		if !arrayOfRolls.is_empty():
-			addLabel("Attack Phase: Remaining rolls: %s" % tempAmount, mainLabel)
-			for dice in arrayOfRolls:
-				addLabel("%d" % [dice], playerLabel)
-		else:
-			addLabel("Attack Phase: Remaining rolls: %s" % tempAmount, mainLabel)
-		await $BattleUI.eitherButtonPressed
-		print(buttonPressed)
-		if buttonPressed == "rollButton":
+		player.inventory.getDice().roll()
+		menuBox._show_menu_box(true)
+		textBox.queue_text("Attack Phase: Remaining rolls: %s" % tempAmount)
+		await eitherOption
+		if optionChosen == "Roll":
+			menuBox._hide_menu_box(false)
 			tempAmount -= 1
-			#TODO: If I want to do +4 in the text, its here.
-			var tempRoll = battleSystem.player.inventory.getDice().diceRoll
+				#TODO: If I want to do +4 in the text, its here.
+			var tempRoll = player.inventory.getDice().diceRoll
 			if buffAmount > 0:
 				tempRoll += buffAmount
-			addLabel("%d" % [tempRoll], playerLabel)
+			textBox.queue_text("Rolled a %d" % tempRoll)
 			arrayOfRolls.append(tempRoll)
-		elif buttonPressed == "endButton":
-			break
+			await textFinished
+		elif optionChosen == "EndTurn":
+			menuBox._hide_menu_box(false)
+			return arrayOfRolls
+		#if tempAmount > 0:
+			#return await playerRollPhase(arrayOfRolls, tempAmount, buffAmount)
+		#menuBox._hide_menu_box(false)
+	menuBox._hide_menu_box(false)
 	return arrayOfRolls
 
 func endTurnPhase(deathCheckEntity : Entity):
 	if !deathCheckEntity.hp:
 		endBattlePhase()
 	else:
-		if deathCheckEntity == battleSystem.player:
+		if deathCheckEntity == player:
 			playerTurnPhase()
 		else:
 			enemyTurnPhase()
 
 func endBattlePhase():
-	if !battleSystem.player.hp:
-		addLabel("%s has died!" % battleSystem.player.characterName, mainLabel)
+	if !player.hp:
+		textBox.queue_text("%s has died!" % player.characterName)
 	else:
-		$BattleUI/UI/MarginContainer/VBoxContainer.visible = false
-		$Timer.start()
-		addLabel("%s has died!" % battleSystem.enemy.characterName, mainLabel)
-		await $Timer.timeout
-		var moneyDrop = battleSystem.enemy.moneyDrop()
+		#$Timer.start()
+		textBox.queue_text("%s has died!" % enemy.characterName)
+		#await $Timer.timeout
+		var moneyDrop = enemy.moneyDrop()
 		if moneyDrop > 0:
-			$Timer.start()
-			addLabel("%s dropped %s gold!" % [battleSystem.enemy.characterName, moneyDrop], mainLabel)
-			await $Timer.timeout
-			battleSystem.player.addMoney(moneyDrop)
-			$Timer.start()
-			addLabel("Amount of Gold: %s -> %s" % [(battleSystem.player.money - moneyDrop), battleSystem.player.money], mainLabel)
-			await $Timer.timeout
-		$BattleUI/UI/MarginContainer/VBoxContainer.visible = true
-		await $BattleUI.eitherButtonPressed
-		battleEnded.emit(battleSystem.player)
+			#$Timer.start()
+			textBox.queue_text("%s dropped %s gold!" % [enemy.characterName, moneyDrop])
+			#await $Timer.timeout
+			player.addMoney(moneyDrop)
+			#$Timer.start()
+			textBox.queue_text("Amount of Gold: %s -> %s" % [(player.money - moneyDrop), player.money])
+			#await $Timer.timeout
+		await textFinished
+		battleEnded.emit(player)
 	# 	player.inventory.add(enemy.diceDrop())
 
 func checkForCrit(arrayOfDice : Array[int]):
@@ -228,10 +253,10 @@ func damageCalculation(arrayOfDice : Array[int], entity : Entity) -> int:
 	for dice in arrayOfDice:
 		damageToDeal += dice
 	if willCrit:
-		if entity == battleSystem.player:
-			addLabel("CRITICAL HIT!!", playerLabel)
+		if entity == player:
+			textBox.queue_text("CRITICAL HIT!!")
 		else:
-			addLabel("CRITICAL HIT!!", enemyLabel)
+			textBox.queue_text("CRITICAL HIT!!")
 		damageToDeal *= arrayOfDice.size()
 	#if entity == battleSystem.player:
 		#addLabel("%s dealt %s" % [entity.characterName, damageToDeal], playerLabel)
@@ -239,13 +264,11 @@ func damageCalculation(arrayOfDice : Array[int], entity : Entity) -> int:
 		#addLabel("%s dealt %s" % [entity.characterName, damageToDeal], enemyLabel)
 	return damageToDeal
 
-func updateHPBar(valueToSet : int, player : bool):
-	if player:
-		var playerBar = $BattleUI/PlayerHPBar
-		playerBar.update_bar(valueToSet)
+func updateHPBar(valueToSet : int, isPlayer : bool):
+	if isPlayer:
+		playerHPBar.update_bar(valueToSet)
 	else:
-		var enemyBar = $BattleUI/EnemyHPBar
-		enemyBar.update_bar(valueToSet)
+		enemyHPBar.update_bar(valueToSet)
 
 # func _on_battle_system_battle_result(victor : Entity):
 # 	if victor is Enemy:
@@ -262,20 +285,23 @@ func updateHPBar(valueToSet : int, player : bool):
 
 
 func healRoll(entity : Entity):
-	addLabel("Roll for healing", mainLabel)
-	await $BattleUI.rollButtonPressed
+	textBox.queue_text("Roll for healing")
+	menuBox._show_menu_box(true)
+	await rollOption
+	menuBox._hide_menu_box(false)
 	var healRollVar = entity.inventory.getDice().roll()
-	addLabel("%s healed for %s" % [entity.characterName, healRollVar], mainLabel)
+	textBox.queue_text("%s healed for %s" % [entity.characterName, healRollVar])
 	#addLabel("HP %s -> %s" % [entity.hp, entity.hp + healRollVar], mainLabel) 
 	#TODO: Add HP Bar interaction
 	#TODO: Clamp
+	updateHPBar(entity.hp + healRollVar, true)
 	entity.hp += healRollVar
-	await $BattleUI.rollButtonPressed
+	await textFinished
 
 
 func shop(entity : Entity):
 	var maxItems := 3
-	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = false
+	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = false
 	$BattleUI/UI/MarginContainer/ShopContainer.visible = true
 	for i in maxItems:
 		var newShopOption = shopOption.instantiate()
@@ -298,33 +324,32 @@ func shop(entity : Entity):
 
 	
 func shop_purchase_attempt(entity : Entity):
-	await $BattleUI.eitherButtonPressed
-	if buttonPressed is String:
+	await eitherOption
+	if optionChosen is String:
 		$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
 		$BattleUI/UI/MarginContainer/ShopContainer.visible = false
 		return 0
 	else:
-		if entity.money >= buttonPressed.itemPrice:
-			removeLabels()
-			match buttonPressed.get_custom_class_name():
+		if entity.money >= optionChosen.itemPrice:
+			match optionChosen.get_custom_class_name():
 				"HealingItem":
-					var amountHealed = entity.useHealing(buttonPressed)
+					var amountHealed = entity.useHealing(optionChosen)
 					$BattleUI/UI/MarginContainer/ShopContainer.visible = false
-					addLabel("%s bought %s for %s" % [entity.characterName, buttonPressed.itemName, buttonPressed.itemPrice], mainLabel)
-					addLabel("%s healed for %s" % [entity.characterName, amountHealed], mainLabel)
+					textBox.queue_text("%s bought %s for %s" % [entity.characterName, optionChosen.itemName, optionChosen.itemPrice])
+					textBox.queue_text("%s healed for %s" % [entity.characterName, amountHealed])
 					#TODO: Add HP Bar interaction
 				"BuffItem":
-					var buffAmountAndTurns = entity.useBuff(buttonPressed)
+					var buffAmountAndTurns = entity.useBuff(optionChosen)
 					$BattleUI/UI/MarginContainer/ShopContainer.visible = false
-					addLabel("%s bought %s for %s" % [entity.characterName, buttonPressed.itemName, buttonPressed.itemPrice], mainLabel)
-					addLabel("%s's dice is +%s for %s turns" % [entity.characterName, buffAmountAndTurns[0], buffAmountAndTurns[1]], mainLabel)
+					textBox.queue_text("%s bought %s for %s" % [entity.characterName, optionChosen.itemName, optionChosen.itemPrice])
+					textBox.queue_text("%s's dice is +%s for %s turns" % [entity.characterName, buffAmountAndTurns[0], buffAmountAndTurns[1]])
 				_:
-					entity.addPassive(buttonPressed)
+					entity.addPassive(optionChosen)
 					$BattleUI/UI/MarginContainer/ShopContainer.visible = false
-					addLabel("%s bought %s for %s" % [entity.characterName, buttonPressed.itemName, buttonPressed.itemPrice], mainLabel)
-			entity.money -= buttonPressed.itemPrice
-			$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
-			await $BattleUI.rollButtonPressed
+					textBox.queue_text("%s bought %s for %s" % [entity.characterName, optionChosen.itemName, optionChosen.itemPrice])
+			entity.money -= optionChosen.itemPrice
+			#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
+			await rollOption
 			return 0
 		else:
 			return await shop_purchase_attempt(entity)
@@ -332,7 +357,7 @@ func shop_purchase_attempt(entity : Entity):
 
 func item_drop(entity : Entity):
 	var maxItems := 1
-	$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = false
+	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = false
 	$BattleUI/UI/MarginContainer/ShopContainer.visible = true
 	for i in maxItems:
 		var newShopOption = shopOption.instantiate()
@@ -353,20 +378,22 @@ func item_drop(entity : Entity):
 
 func item_accept(entity : Entity):
 	await $BattleUI.eitherButtonPressed
-	if buttonPressed is String:
+	if optionChosen is String:
 		$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
 		$BattleUI/UI/MarginContainer/ShopContainer.visible = false
 	else:
-		removeLabels()
-		entity.addPassive(buttonPressed)
+		entity.addPassive(optionChosen)
 		$BattleUI/UI/MarginContainer/ShopContainer.visible = false
-		addLabel("%s picked up %s!!" % [entity.characterName, buttonPressed.itemName], mainLabel)
-		$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
-		await $BattleUI.rollButtonPressed
+		textBox.queue_text("%s picked up %s!!" % [entity.characterName, optionChosen.itemName])
+		#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
+		await rollOption
 
 func _on_battle_ui_either_button_pressed():
 	pass # Replace with function body.
 
 
 func _on_timer_timeout():
+	pass # Replace with function body.
+
+func _on_battle_ui_text_finished():
 	pass # Replace with function body.
