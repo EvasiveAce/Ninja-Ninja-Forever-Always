@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://eh81dl04wjrf"]
+[gd_scene load_steps=11 format=3 uid="uid://eh81dl04wjrf"]
 
 [ext_resource type="Script" path="res://Scripts/battleUI.gd" id="1_ysbu8"]
 [ext_resource type="PackedScene" uid="uid://br87t0deghdxg" path="res://Scenes/Backgrounds/ice_background.tscn" id="2_c5o12"]
@@ -8,6 +8,7 @@
 [ext_resource type="Theme" uid="uid://dgrlukali7h22" path="res://Themes/HPBarEnemy.tres" id="5_hb4co"]
 [ext_resource type="PackedScene" uid="uid://dulgx6658a325" path="res://Scenes/textbox.tscn" id="7_e8dcj"]
 [ext_resource type="PackedScene" uid="uid://bjlpulo7gfatv" path="res://Scenes/menubox.tscn" id="8_mbkmc"]
+[ext_resource type="PackedScene" uid="uid://0fj8tugq6ikh" path="res://Scenes/item_pedestal.tscn" id="9_tc2ds"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kh052"]
 
@@ -21,6 +22,9 @@ offset_bottom = 270.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ysbu8")
+
+[node name="ItemPedestal" parent="." instance=ExtResource("9_tc2ds")]
+visible = false
 
 [node name="IceBackground" parent="." instance=ExtResource("2_c5o12")]
 offset = Vector2(45, -15)
