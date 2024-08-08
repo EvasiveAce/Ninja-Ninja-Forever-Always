@@ -6,7 +6,8 @@ var dungeonSize := 10
 func _ready():
 	$GameManager.gameManagerInit($Player)
 	$GameManager.startBattlePhase()
-
+	$GameManager.playerHPBar.set_max($Player.max_hp)
+	$GameManager.playerHPBar.update_bar($Player.hp)
 
 
 func _on_game_manager_battle_ended(entity):

@@ -64,10 +64,8 @@ func _on_option(extra_arg_0 : String):
 	optionChosen = extra_arg_0
 
 func startBattlePhase():
-	playerHPBar.set_max(player.max_hp)
-	updateHPBar(player.hp, true)
 	enemyHPBar.set_max(enemy.hp)
-	updateHPBar(enemy.hp, false)
+	enemyHPBar.update_bar(enemy.hp)
 	encounterBattlePhase()
 	#removeLabels()
 	speedBattlePhase()
@@ -134,10 +132,10 @@ func playerTurnPhase():
 			tempDisplay += "%s = %s" % [dice, damageCalculation(arrayOfRolls, player)] 
 	textBox.queue_text(tempDisplay)
 	var damageToDeal = damageCalculation(arrayOfRolls, player)
-	await textFinished
 	#addLabel("%s's HP %s -> %s" % [battleSystem.enemy.characterName, battleSystem.enemy.hp, battleSystem.enemy.hp - damageToDeal], playerLabel)
-	updateHPBar(enemy.hp - damageToDeal, false)
+	enemyHPBar.update_bar(enemy.hp - damageToDeal)
 	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
+	await textFinished
 	battleSystem.playerHit(damageToDeal)
 	endTurnPhase(enemy)
 
@@ -161,6 +159,7 @@ func enemyTurnPhase():
 				break
 	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
 	textBox.queue_text("Enemy Remaining rolls: %s" % (tempEnemyAmountRoll - arrayOfRolls.size()))
+	await textFinished
 	for dice in arrayOfRolls:
 		#$Timer.start()
 		textBox.queue_text("%s rolled a %d" % [enemy.characterName, dice])
@@ -168,11 +167,13 @@ func enemyTurnPhase():
 	var damageToDeal = damageCalculation(arrayOfRolls, enemy)
 	#await $Timer.timeout
 	textBox.queue_text("%s's HP %s -> %s" % [player.characterName, player.hp, player.hp - damageToDeal])
-	updateHPBar(player.hp - damageToDeal, true)
+	await textFinished
+	playerHPBar.update_bar(player.hp - damageToDeal)
 	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
 	await textFinished
 	battleSystem.enemyHit(damageToDeal)
 	endTurnPhase(player)
+
 
 func playerRollPhase(arrayOfRolls : Array[int], tempAmount : int, buffAmount : int) -> Array[int]:
 	##TODO: program luck here for more crits - if you have more than 1 roll, it will be more likely to be the same
@@ -221,6 +222,7 @@ func endBattlePhase():
 	if !player.hp:
 		textBox.queue_text("%s has died!" % player.characterName)
 	else:
+		enemy.queue_free()
 		#$Timer.start()
 		textBox.queue_text("%s has died!" % enemy.characterName)
 		#await $Timer.timeout
@@ -264,12 +266,6 @@ func damageCalculation(arrayOfDice : Array[int], entity : Entity) -> int:
 		#addLabel("%s dealt %s" % [entity.characterName, damageToDeal], enemyLabel)
 	return damageToDeal
 
-func updateHPBar(valueToSet : int, isPlayer : bool):
-	if isPlayer:
-		playerHPBar.update_bar(valueToSet)
-	else:
-		enemyHPBar.update_bar(valueToSet)
-
 # func _on_battle_system_battle_result(victor : Entity):
 # 	if victor is Enemy:
 # 		print("Game over!")
@@ -294,7 +290,7 @@ func healRoll(entity : Entity):
 	#addLabel("HP %s -> %s" % [entity.hp, entity.hp + healRollVar], mainLabel) 
 	#TODO: Add HP Bar interaction
 	#TODO: Clamp
-	updateHPBar(entity.hp + healRollVar, true)
+	playerHPBar.update_bar(entity.hp + healRollVar)
 	entity.hp += healRollVar
 	await textFinished
 
