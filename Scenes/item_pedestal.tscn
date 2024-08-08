@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://0fj8tugq6ikh"]
+
+[ext_resource type="Texture2D" uid="uid://sh6557px6l4n" path="res://Sprites/Items/TEMPItemPedestal.png" id="1_gftym"]
+
+[node name="ItemPedestal" type="Sprite2D"]
+texture_filter = 1
+texture = ExtResource("1_gftym")
+offset = Vector2(242, 94)

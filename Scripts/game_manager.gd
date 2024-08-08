@@ -352,37 +352,46 @@ func shop_purchase_attempt(entity : Entity):
 
 
 func item_drop(entity : Entity):
-	var maxItems := 1
+	#var maxItems := 1
 	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = false
-	$BattleUI/UI/MarginContainer/ShopContainer.visible = true
-	for i in maxItems:
-		var newShopOption = shopOption.instantiate()
-		var newItem : Item
-		newItem = passiveItemRandomizer.getRandomPassive()
-		newShopOption.add_child(newItem)
-		newItem.itemPrice = 0
-		newShopOption.item = newItem
-		newShopOption.get_child(0).get_child(1).visible = false
+	$BattleUI/ItemPedestal.visible = true
+	#for i in maxItems:
+		#var newShopOption = shopOption.instantiate()
+		#var newItem : Item
+		#newItem = passiveItemRandomizer.getRandomPassive()
+		#$BattleUI/ItemPedestal.add_child(newItem)
+		#newItem.itemPrice = 0
+		#newShopOption.item = newItem
+		#newShopOption.get_child(0).get_child(1).visible = false
 		# Get the cost label and hide it 
-		$BattleUI/UI/MarginContainer/ShopContainer.add_child(newShopOption)
-		maxItems -= 1
+		#$BattleUI/UI/MarginContainer/ShopContainer.add_child(newShopOption)
+		#maxItems -= 1
+	var newItem : Item
+	newItem = passiveItemRandomizer.getRandomPassive()
+	$BattleUI/ItemPedestal.add_child(newItem)
 	##TODO: Make percentages of drop/itemchances
-	await item_accept(entity)
+	await item_accept(entity, newItem)
 	for child in $BattleUI/UI/MarginContainer/ShopContainer.get_children():
 		child.queue_free()
+	$BattleUI/ItemPedestal.visible = false
 
 
-func item_accept(entity : Entity):
-	await $BattleUI.eitherButtonPressed
-	if optionChosen is String:
-		$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
-		$BattleUI/UI/MarginContainer/ShopContainer.visible = false
-	else:
-		entity.addPassive(optionChosen)
-		$BattleUI/UI/MarginContainer/ShopContainer.visible = false
-		textBox.queue_text("%s picked up %s!!" % [entity.characterName, optionChosen.itemName])
+func item_accept(entity : Entity, newItem : Item):
+	textBox.queue_text("You found a %s!" % newItem.name)
+	await textFinished
+	menuBox._show_menu_box(true)
+	await eitherOption
+	menuBox._hide_menu_box(false)
+	if optionChosen != "Roll":
 		#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
-		await rollOption
+		#$BattleUI/UI/MarginContainer/ShopContainer.visible = false
+		return
+	else:
+		entity.addPassive(newItem)
+		#$BattleUI/UI/MarginContainer/ShopContainer.visible = false
+		textBox.queue_text("%s picked up %s!!" % [entity.characterName, newItem.name])
+		#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
+		await textFinished
 
 func _on_battle_ui_either_button_pressed():
 	pass # Replace with function body.
