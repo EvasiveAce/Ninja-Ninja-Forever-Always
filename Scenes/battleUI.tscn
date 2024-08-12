@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://eh81dl04wjrf"]
+[gd_scene load_steps=12 format=3 uid="uid://eh81dl04wjrf"]
 
 [ext_resource type="Script" path="res://Scripts/battleUI.gd" id="1_ysbu8"]
 [ext_resource type="PackedScene" uid="uid://br87t0deghdxg" path="res://Scenes/Backgrounds/ice_background.tscn" id="2_c5o12"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dulgx6658a325" path="res://Scenes/textbox.tscn" id="7_e8dcj"]
 [ext_resource type="PackedScene" uid="uid://bjlpulo7gfatv" path="res://Scenes/menubox.tscn" id="8_mbkmc"]
 [ext_resource type="PackedScene" uid="uid://0fj8tugq6ikh" path="res://Scenes/item_pedestal.tscn" id="9_tc2ds"]
+[ext_resource type="PackedScene" uid="uid://cai3lwh2ndgcv" path="res://Scenes/shop_menu_box.tscn" id="10_14mgv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kh052"]
 
@@ -83,6 +84,9 @@ script = ExtResource("2_evov3")
 
 [node name="Menubox" parent="." instance=ExtResource("8_mbkmc")]
 
+[node name="ShopMenuBox" parent="." instance=ExtResource("10_14mgv")]
+
 [connection signal="itemButtonPressed" from="UI/MarginContainer/ShopContainer" to="." method="_on_shop_container_item_button_pressed"]
 [connection signal="textFinished" from="Textbox" to="." method="_on_textbox_text_finished"]
 [connection signal="optionChosen" from="Menubox" to="." method="_on_menubox_option_chosen"]
+[connection signal="optionChosen" from="ShopMenuBox" to="." method="_on_shop_menu_box_option_chosen"]

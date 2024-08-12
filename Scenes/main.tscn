@@ -10,5 +10,6 @@ script = ExtResource("1_ku8eo")
 [node name="GameManager" parent="." instance=ExtResource("2_cndqd")]
 
 [node name="Player" parent="." instance=ExtResource("2_hbm3l")]
+z_index = 1
 
 [connection signal="battleEnded" from="GameManager" to="." method="_on_game_manager_battle_ended"]
