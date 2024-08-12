@@ -7,14 +7,16 @@ signal battleEnded(entity : Entity)
 var battlesWon := 0 
 
 
-var shopOption = preload("res://Scenes/shop_option.tscn")
-
-
 ############ Signal Variables
 
 @onready var rollOption = $BattleUI.rollOption
 @onready var endOption = $BattleUI.endOption
 @onready var eitherOption = $BattleUI.eitherOption
+
+@onready var item1Option = $BattleUI.item1
+@onready var item2Option = $BattleUI.item2
+@onready var item3Option = $BattleUI.item3
+@onready var itemOption = $BattleUI.itemOption
 
 @onready var textFinished = $BattleUI.textFinished
 
@@ -34,6 +36,7 @@ var enemy
 
 @onready var textBox = $BattleUI/Textbox
 @onready var menuBox = $BattleUI/Menubox
+@onready var shopBox = $BattleUI/ShopMenuBox
 
 #####################
 
@@ -41,6 +44,19 @@ var enemy
 
 @onready var playerHPBar = $BattleUI/PlayerHPBar
 @onready var enemyHPBar = $BattleUI/EnemyHPBar
+
+#####################
+
+############ Shop Variables
+
+@onready var item1 = $BattleUI/ShopMenuBox/ShopMenuContainer/MarginContainer/HBoxContainer/Item1
+@onready var item1Cost = $BattleUI/ShopMenuBox/ShopMenuContainer/MarginContainer/HBoxContainer/Item1/Item1Cost
+
+@onready var item2 = $BattleUI/ShopMenuBox/ShopMenuContainer/MarginContainer/HBoxContainer/Item2
+@onready var item2Cost = $BattleUI/ShopMenuBox/ShopMenuContainer/MarginContainer/HBoxContainer/Item2/Item2Cost
+
+@onready var item3 = $BattleUI/ShopMenuBox/ShopMenuContainer/MarginContainer/HBoxContainer/Item3
+@onready var item3Cost = $BattleUI/ShopMenuBox/ShopMenuContainer/MarginContainer/HBoxContainer/Item3/Item3Cost
 
 #####################
 
@@ -239,6 +255,7 @@ func endBattlePhase():
 		battleEnded.emit(player)
 	# 	player.inventory.add(enemy.diceDrop())
 
+
 func checkForCrit(arrayOfDice : Array[int]):
 	var willCrit := false
 	if arrayOfDice.size() >= 2:
@@ -298,21 +315,31 @@ func healRoll(entity : Entity):
 func shop(entity : Entity):
 	var maxItems := 3
 	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = false
-	$BattleUI/UI/MarginContainer/ShopContainer.visible = true
+	#$BattleUI/UI/MarginContainer/ShopContainer.visible = true
 	for i in maxItems:
-		var newShopOption = shopOption.instantiate()
 		var newItem : Item
 		match maxItems:
 			3:
 				newItem = healingItemRandomizer.getRandomHealing()
+				item3.add_child(newItem)
+				item3.itemPlaceholder = newItem
+				item3.set_text(newItem.itemName)
+				item3Cost.set_text("$%s" % newItem.itemPrice)
 			2:
 				newItem = passiveItemRandomizer.getRandomPassive()
+				item2.add_child(newItem)
+				item2.itemPlaceholder = newItem
+				item2.set_text(newItem.itemName)
+				item2Cost.set_text("$%s" % newItem.itemPrice)
 			1:
 				newItem = buffItemRandomizer.getRandomBuff()
-		newShopOption.add_child(newItem)
-		newShopOption.item = newItem
-		$BattleUI/UI/MarginContainer/ShopContainer.add_child(newShopOption)
+				item1.add_child(newItem)
+				item1.itemPlaceholder = newItem
+				item1.set_text(newItem.itemName)
+				item1Cost.set_text("$%s" % newItem.itemPrice)
 		maxItems -= 1
+
+	textBox.queue_text("You found a shop!")
 	##TODO: Make percentages of drop/itemchances
 	await shop_purchase_attempt(entity)
 	for child in $BattleUI/UI/MarginContainer/ShopContainer.get_children():
@@ -320,36 +347,59 @@ func shop(entity : Entity):
 
 	
 func shop_purchase_attempt(entity : Entity):
-	await eitherOption
-	if optionChosen is String:
-		$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
-		$BattleUI/UI/MarginContainer/ShopContainer.visible = false
-		return 0
-	else:
-		if entity.money >= optionChosen.itemPrice:
-			match optionChosen.get_custom_class_name():
-				"HealingItem":
-					var amountHealed = entity.useHealing(optionChosen)
-					$BattleUI/UI/MarginContainer/ShopContainer.visible = false
-					textBox.queue_text("%s bought %s for %s" % [entity.characterName, optionChosen.itemName, optionChosen.itemPrice])
-					textBox.queue_text("%s healed for %s" % [entity.characterName, amountHealed])
-					#TODO: Add HP Bar interaction
-				"BuffItem":
-					var buffAmountAndTurns = entity.useBuff(optionChosen)
-					$BattleUI/UI/MarginContainer/ShopContainer.visible = false
-					textBox.queue_text("%s bought %s for %s" % [entity.characterName, optionChosen.itemName, optionChosen.itemPrice])
-					textBox.queue_text("%s's dice is +%s for %s turns" % [entity.characterName, buffAmountAndTurns[0], buffAmountAndTurns[1]])
-				_:
-					entity.addPassive(optionChosen)
-					$BattleUI/UI/MarginContainer/ShopContainer.visible = false
-					textBox.queue_text("%s bought %s for %s" % [entity.characterName, optionChosen.itemName, optionChosen.itemPrice])
-			entity.money -= optionChosen.itemPrice
-			#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.visible = true
-			await rollOption
-			return 0
-		else:
-			return await shop_purchase_attempt(entity)
+	var tempVar = false
+	while !tempVar:
+		menuBox._show_menu_box(true)
+		await textFinished
+		if optionChosen == "Roll":
+			menuBox._show_menu_box(false)
+			shopBox._show_menu_box(true)
+			await itemOption
+			if optionChosen == "Item1":
+				tempVar = await shopChoice(item1, entity)
+			elif optionChosen == "Item2":
+				tempVar = await shopChoice(item2, entity)
+			elif optionChosen == "Item3":
+				tempVar = await shopChoice(item3, entity)
+			elif optionChosen == "Break":
+				shopBox._hide_menu_box(false)
+		elif optionChosen == "EndTurn":
+				menuBox._hide_menu_box(false)
+				return
 
+
+func shopChoice(optionPreItem : Label, entity : Entity):
+	var optionChose = optionPreItem.itemPlaceholder
+	if entity.money >= optionChose.itemPrice:
+		menuBox._hide_menu_box(false)
+		shopBox._hide_menu_box(false)
+		entity.money -= optionChose.itemPrice
+		match optionChose.get_custom_class_name():
+			"HealingItem":
+				var amountHealed = entity.useHealing(optionPreItem.get_child(1))
+				#$BattleUI/UI/MarginContainer/ShopContainer.visible = false
+				textBox.queue_text("%s bought %s for %s" % [entity.characterName, optionChose.itemName, optionChose.itemPrice])
+				textBox.queue_text("%s healed for %s" % [entity.characterName, amountHealed])
+				await textFinished
+				optionPreItem.get_child(1).queue_free()
+				optionChose = null
+				#TODO: Add HP Bar interaction
+			"BuffItem":
+				var buffAmountAndTurns = entity.useBuff(optionPreItem.get_child(1))
+				#$BattleUI/UI/MarginContainer/ShopContainer.visible = false
+				textBox.queue_text("%s bought %s for %s" % [entity.characterName, optionChose.itemName, optionChose.itemPrice])
+				textBox.queue_text("%s's dice is +%s for %s turns" % [entity.characterName, buffAmountAndTurns[0], buffAmountAndTurns[1]])
+				await textFinished
+				optionPreItem.get_child(1).queue_free()
+				optionChose = null
+			_:
+				entity.addPassive(optionPreItem.get_child(1))
+				#$BattleUI/UI/MarginContainer/ShopContainer.visible = false
+				textBox.queue_text("%s bought %s for %s" % [entity.characterName, optionChose.itemName, optionChose.itemPrice])
+				await textFinished
+				optionChose = null
+		return true
+	return false
 
 func item_drop(entity : Entity):
 	#var maxItems := 1
@@ -369,6 +419,7 @@ func item_drop(entity : Entity):
 	var newItem : Item
 	newItem = passiveItemRandomizer.getRandomPassive()
 	$BattleUI/ItemPedestal.add_child(newItem)
+	newItem.on_ready()
 	##TODO: Make percentages of drop/itemchances
 	await item_accept(entity, newItem)
 	for child in $BattleUI/UI/MarginContainer/ShopContainer.get_children():

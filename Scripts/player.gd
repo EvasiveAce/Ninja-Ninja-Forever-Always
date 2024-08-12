@@ -42,7 +42,11 @@ func getDice():
 
 func addPassive(item : Item):
 	item.reparent($Passives)
+	await $Sprite.animation_looped
+	$Sprite.stop()
 	item.on_add(self)
+	$Sprite.play("Idle")
+	item.start_animation()
 
 func useHealing(item : Item):
 	return item.on_use(self)
