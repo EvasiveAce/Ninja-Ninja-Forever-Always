@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="DiceResource" load_steps=2 format=3 uid="uid://pq81bm0nawg7"]
-
-[ext_resource type="Script" path="res://Scripts/dice_resource.gd" id="1_wssr5"]
-
-[resource]
-script = ExtResource("1_wssr5")
-diceName = "Starchy"
-sides = 4
-modifier = -1

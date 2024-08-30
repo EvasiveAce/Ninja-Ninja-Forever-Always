@@ -1,0 +1,54 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://rf1kj5sjx18k"]
+
+[ext_resource type="Texture2D" uid="uid://duqldp33fatkt" path="res://Entities/Enemies/NoseGoblin/Art/NoseGoblinSpriteSheet.png" id="1_4uato"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3cht4"]
+atlas = ExtResource("1_4uato")
+region = Rect2(0, 0, 29, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppf22"]
+atlas = ExtResource("1_4uato")
+region = Rect2(29, 0, 29, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ugteo"]
+atlas = ExtResource("1_4uato")
+region = Rect2(58, 0, 29, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nxxtg"]
+atlas = ExtResource("1_4uato")
+region = Rect2(87, 0, 29, 36)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3cht4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppf22")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppf22")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ugteo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nxxtg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3cht4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppf22")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ugteo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nxxtg")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 4.0
+}]

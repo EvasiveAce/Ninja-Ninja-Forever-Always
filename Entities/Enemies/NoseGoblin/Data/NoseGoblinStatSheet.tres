@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatSheet" load_steps=2 format=3 uid="uid://bjahbqrq8qspk"]
+
+[ext_resource type="Script" path="res://Entities/Enemies/Data/stat_sheet.gd" id="1_2w8nd"]
+
+[resource]
+script = ExtResource("1_2w8nd")
+max_hp = 5
+moneyRange = 5
+rollAmount = 1
+dropChance = 25

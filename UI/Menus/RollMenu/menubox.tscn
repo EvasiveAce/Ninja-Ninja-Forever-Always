@@ -1,0 +1,71 @@
+[gd_scene load_steps=6 format=3 uid="uid://bjlpulo7gfatv"]
+
+[ext_resource type="FontFile" uid="uid://bpahbhn01mt3o" path="res://Common/Fonts/Kenney Pixel.ttf" id="1_43glh"]
+[ext_resource type="Script" path="res://UI/Menus/RollMenu/menubox.gd" id="1_lqgoo"]
+[ext_resource type="PackedScene" path="res://UI/Menus/menu_cursor.tscn" id="2_ajn5a"]
+[ext_resource type="Script" path="res://UI/Menus/ShopMenu/menu_item.gd" id="2_pratv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ok0r3"]
+bg_color = Color(0.10752, 0.0744, 0.24, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[node name="MenuBox" type="CanvasLayer"]
+script = ExtResource("1_lqgoo")
+
+[node name="MenuBoxContainer" type="MarginContainer" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -116.0
+offset_top = -120.0
+offset_right = -8.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Panel" type="Panel" parent="MenuBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ok0r3")
+
+[node name="MarginContainer" type="MarginContainer" parent="MenuBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Roll" type="Label" parent="MenuBoxContainer/MarginContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_43glh")
+theme_override_font_sizes/font_size = 32
+text = "Roll"
+script = ExtResource("2_pratv")
+
+[node name="EndTurn" type="Label" parent="MenuBoxContainer/MarginContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_43glh")
+theme_override_font_sizes/font_size = 32
+text = "End"
+script = ExtResource("2_pratv")
+
+[node name="menu_cursor" parent="." instance=ExtResource("2_ajn5a")]
+offset_right = 9.0
+offset_bottom = 8.0
+scale = Vector2(2.5, 2.5)
+menu_parent_path = NodePath("../MenuBoxContainer/MarginContainer/VBoxContainer")
+cursor_offset = Vector2(-10, -5)
+
+[connection signal="cursor_selected" from="MenuBoxContainer/MarginContainer/VBoxContainer/Roll" to="." method="_on_cursor_selected"]
+[connection signal="cursor_selected" from="MenuBoxContainer/MarginContainer/VBoxContainer/EndTurn" to="." method="_on_cursor_selected"]

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DiceResource" load_steps=2 format=3 uid="uid://2356tqpjjxdd"]
+
+[ext_resource type="Script" path="res://Entities/Dice/Data/dice_resource.gd" id="1_iqgay"]
+
+[resource]
+script = ExtResource("1_iqgay")
+diceName = "Goblin"
+sides = 6
+modifier = 2

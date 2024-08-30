@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmh1lxffrjvjm"]
+
+[ext_resource type="Script" path="res://Common/BattleSystem/battle_system.gd" id="1_yif8b"]
+
+[node name="BattleSystem" type="Node2D"]
+script = ExtResource("1_yif8b")
