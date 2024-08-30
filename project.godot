@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Ninja Ninja Forever Always"
-config/features=PackedStringArray("4.2", "GL Compatibility")
+config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/bg_color=Color(0.410955, 0.503285, 1, 1)
 
 [display]
@@ -23,6 +23,14 @@ window/size/borderless=true
 window/size/window_width_override=1920
 window/size/window_height_override=1080
 window/stretch/mode="canvas_items"
+
+[file_customization]
+
+folder_colors={
+"res://Common/": "gray",
+"res://Entities/": "red",
+"res://UI/": "green"
+}
 
 [rendering]
 

@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="DiceResource" load_steps=2 format=3 uid="uid://vcx7y02v6w53"]
-
-[ext_resource type="Script" path="res://Scripts/dice_resource.gd" id="1_6wl01"]
-
-[resource]
-script = ExtResource("1_6wl01")
-diceName = "Kringle"
-sides = 4
-modifier = 4
