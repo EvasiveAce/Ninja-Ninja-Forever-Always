@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Common/GameManager/game_manager.gd" id="1_185n4"]
 [ext_resource type="Script" path="res://Common/BattleSystem/battle_system.gd" id="3_0skpj"]
-[ext_resource type="PackedScene" path="res://UI/BattleUI/battleUI.tscn" id="3_bfvim"]
+[ext_resource type="PackedScene" uid="uid://eh81dl04wjrf" path="res://UI/BattleUI/battleUI.tscn" id="3_bfvim"]
 
 [node name="GameManager" type="Node"]
 script = ExtResource("1_185n4")

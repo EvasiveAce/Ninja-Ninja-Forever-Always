@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://bm7j2qmmmqs2g"]
+
+[ext_resource type="Script" path="res://Entities/Items/Data/item_resource.gd" id="1_nadfc"]
+
+[resource]
+script = ExtResource("1_nadfc")
+itemName = "Crown of Thorns"
+itemDescription = "+1 dmg taken, 2x healing"
+itemPrice = 10

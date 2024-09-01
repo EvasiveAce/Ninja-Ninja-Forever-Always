@@ -35,7 +35,10 @@ func addMoney(moneyToAdd : int):
 	money += moneyToAdd
 
 func getPassives():
-	pass
+	var tempArray = []
+	for passive in $Passives.get_children():
+		tempArray.push_front(passive)
+	return tempArray
 
 func getDice():
 	return $Dice

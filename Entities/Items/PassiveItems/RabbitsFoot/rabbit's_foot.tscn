@@ -26,5 +26,3 @@ sprite_frames = ExtResource("4_803tb")
 animation = &"Idle"
 autoplay = "Idle"
 offset = Vector2(155, 92)
-
-[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
