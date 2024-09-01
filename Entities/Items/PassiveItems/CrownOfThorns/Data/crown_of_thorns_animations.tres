@@ -1,0 +1,35 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://dm1lm7ilqiwmw"]
+
+[ext_resource type="Texture2D" uid="uid://byt23d3ox5lkx" path="res://Entities/Items/PassiveItems/CrownOfThorns/Art/CrownOfThornsSpriteSheet.png" id="1_1thhj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vpyy8"]
+atlas = ExtResource("1_1thhj")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s3cdn"]
+atlas = ExtResource("1_1thhj")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5jtgy"]
+atlas = ExtResource("1_1thhj")
+region = Rect2(64, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vpyy8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s3cdn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vpyy8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5jtgy")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]

@@ -173,15 +173,11 @@ func enemyTurnPhase():
 					crit = false
 			if crit == true:
 				break
-	#$BattleUI/UI/MarginContainer/VBoxContainer/RollButton.text = "Next"
 	textBox.queue_text("Enemy Remaining rolls: %s" % (tempEnemyAmountRoll - arrayOfRolls.size()))
 	await textFinished
 	for dice in arrayOfRolls:
-		#$Timer.start()
 		textBox.queue_text("%s rolled a %d" % [enemy.characterName, dice])
-		#await $Timer.timeout
 	var damageToDeal = damageCalculation(arrayOfRolls, enemy)
-	#await $Timer.timeout
 	textBox.queue_text("%s's HP %s -> %s" % [player.characterName, player.hp, player.hp - damageToDeal])
 	await textFinished
 	playerHPBar.update_bar(player.hp - damageToDeal)
@@ -277,10 +273,11 @@ func damageCalculation(arrayOfDice : Array[int], entity : Entity) -> int:
 		else:
 			textBox.queue_text("CRITICAL HIT!!")
 		damageToDeal *= arrayOfDice.size()
-	#if entity == battleSystem.player:
-		#addLabel("%s dealt %s" % [entity.characterName, damageToDeal], playerLabel)
-	#else:
-		#addLabel("%s dealt %s" % [entity.characterName, damageToDeal], enemyLabel)
+	var playerPassiveCheck = player.getPassives()
+	for passive in playerPassiveCheck:
+		if passive.get_custom_class_name() == "CrownOfThorns" and entity == enemy:
+			textBox.queue_text("The crown sinks into your skin")
+			damageToDeal += 1
 	return damageToDeal
 
 # func _on_battle_system_battle_result(victor : Entity):
@@ -303,6 +300,11 @@ func healRoll(entity : Entity):
 	await rollOption
 	menuBox._hide_menu_box(false)
 	var healRollVar = entity.inventory.getDice().roll()
+	var playerPassiveCheck = player.getPassives()
+	for passive in playerPassiveCheck:
+		if passive.get_custom_class_name() == "CrownOfThorns":
+			textBox.queue_text("You feel holy")
+			healRollVar *= 2
 	textBox.queue_text("%s healed for %s" % [entity.characterName, healRollVar])
 	#addLabel("HP %s -> %s" % [entity.hp, entity.hp + healRollVar], mainLabel) 
 	#TODO: Add HP Bar interaction

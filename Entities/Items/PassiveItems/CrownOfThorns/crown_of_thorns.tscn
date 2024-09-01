@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://b2yvewpsa5psw"]
+
+[ext_resource type="Script" path="res://Entities/Items/PassiveItems/CrownOfThorns/crown_of_thorns.gd" id="1_ovsb6"]
+[ext_resource type="Script" path="res://Entities/Items/Data/item_resource.gd" id="2_o2sji"]
+[ext_resource type="SpriteFrames" uid="uid://dm1lm7ilqiwmw" path="res://Entities/Items/PassiveItems/CrownOfThorns/Data/crown_of_thorns_animations.tres" id="2_x2ott"]
+[ext_resource type="SpriteFrames" uid="uid://not04erlpdcq" path="res://Entities/Items/PassiveItems/CrownOfThorns/Data/crown_of_thorns_passive_animations.tres" id="4_u6bbp"]
+
+[sub_resource type="Resource" id="Resource_4q86e"]
+script = ExtResource("2_o2sji")
+itemName = "Crown of Thorns"
+itemDescription = "+1 dmg taken, 2x healing"
+itemPrice = 10
+
+[node name="Crown of Thorns" type="Node2D"]
+script = ExtResource("1_ovsb6")
+itemResource = SubResource("Resource_4q86e")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+sprite_frames = ExtResource("2_x2ott")
+animation = &"Idle"
+autoplay = "Idle"
+offset = Vector2(240, 82)
+
+[node name="PassiveSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+z_index = 1
+texture_filter = 1
+sprite_frames = ExtResource("4_u6bbp")
+animation = &"Idle"
+autoplay = "Idle"
+frame = 1
+frame_progress = 0.531756
+offset = Vector2(158, 79)
