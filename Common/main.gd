@@ -21,7 +21,7 @@ func _on_game_manager_battle_ended(entity):
 	if dungeonSize == 6 or dungeonSize == 4:
 		await $GameManager.shop(entity)
 		#$GameManager.removeLabels()
-	if dungeonSize == 9:
+	if dungeonSize == 5:
 		await $GameManager.item_drop(entity)
 		#$GameManager.removeLabels()
 	if dungeonSize == 1:
