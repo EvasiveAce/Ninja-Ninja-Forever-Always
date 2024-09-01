@@ -4,11 +4,11 @@
 [ext_resource type="PackedScene" path="res://UI/Worlds/World1/ice_background.tscn" id="2_c5o12"]
 [ext_resource type="Texture2D" uid="uid://c5pha03w8f0p7" path="res://UI/BattleUI/Art/TempBackground.png" id="2_umnyg"]
 [ext_resource type="PackedScene" uid="uid://d2wps5nmdw8a2" path="res://UI/BattleUI/HealthBars/hp_bar.tscn" id="4_hmane"]
-[ext_resource type="Theme" path="res://UI/BattleUI/HealthBars/Data/HPBarEnemy.tres" id="5_hb4co"]
+[ext_resource type="Theme" uid="uid://qa8yedffjjhx" path="res://UI/BattleUI/HealthBars/Data/HPBarEnemy.tres" id="5_hb4co"]
 [ext_resource type="PackedScene" uid="uid://dulgx6658a325" path="res://UI/TextBoxes/textbox.tscn" id="7_e8dcj"]
-[ext_resource type="PackedScene" path="res://UI/Menus/RollMenu/menubox.tscn" id="8_mbkmc"]
+[ext_resource type="PackedScene" uid="uid://bjlpulo7gfatv" path="res://UI/Menus/RollMenu/menubox.tscn" id="8_mbkmc"]
 [ext_resource type="PackedScene" uid="uid://0fj8tugq6ikh" path="res://Entities/Items/ItemPedestal/item_pedestal.tscn" id="9_tc2ds"]
-[ext_resource type="PackedScene" path="res://UI/Menus/ShopMenu/shop_menu_box.tscn" id="10_14mgv"]
+[ext_resource type="PackedScene" uid="uid://cai3lwh2ndgcv" path="res://UI/Menus/ShopMenu/shop_menu_box.tscn" id="10_14mgv"]
 
 [node name="BattleUI" type="Control"]
 layout_mode = 3

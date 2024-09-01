@@ -342,8 +342,8 @@ func shop(entity : Entity):
 	textBox.queue_text("You found a shop!")
 	##TODO: Make percentages of drop/itemchances
 	await shop_purchase_attempt(entity)
-	for child in $BattleUI/UI/MarginContainer/ShopContainer.get_children():
-		child.queue_free()
+#	for child in $BattleUI/UI/MarginContainer/ShopContainer.get_children():
+#		child.queue_free()
 
 	
 func shop_purchase_attempt(entity : Entity):
@@ -377,13 +377,14 @@ func shopChoice(optionPreItem : Label, entity : Entity):
 		match optionChose.get_custom_class_name():
 			"HealingItem":
 				var amountHealed = entity.useHealing(optionPreItem.get_child(1))
+				playerHPBar.update_bar(entity.hp)
 				#$BattleUI/UI/MarginContainer/ShopContainer.visible = false
 				textBox.queue_text("%s bought %s for %s" % [entity.characterName, optionChose.itemName, optionChose.itemPrice])
 				textBox.queue_text("%s healed for %s" % [entity.characterName, amountHealed])
 				await textFinished
 				optionPreItem.get_child(1).queue_free()
 				optionChose = null
-				#TODO: Add HP Bar interaction
+
 			"BuffItem":
 				var buffAmountAndTurns = entity.useBuff(optionPreItem.get_child(1))
 				#$BattleUI/UI/MarginContainer/ShopContainer.visible = false
@@ -422,8 +423,8 @@ func item_drop(entity : Entity):
 	newItem.on_ready()
 	##TODO: Make percentages of drop/itemchances
 	await item_accept(entity, newItem)
-	for child in $BattleUI/UI/MarginContainer/ShopContainer.get_children():
-		child.queue_free()
+#	for child in $BattleUI/UI/MarginContainer/ShopContainer.get_children():
+#		child.queue_free()
 	$BattleUI/ItemPedestal.visible = false
 
 

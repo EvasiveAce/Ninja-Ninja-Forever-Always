@@ -9,8 +9,6 @@
 [node name="Player" type="Node2D" node_paths=PackedStringArray("inventory")]
 script = ExtResource("1_qq125")
 max_hp = 20
-money = 10
-rollAmount = 10
 characterName = "Ninja"
 inventory = NodePath("InventoryComponent")
 

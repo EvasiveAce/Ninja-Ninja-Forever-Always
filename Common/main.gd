@@ -33,4 +33,4 @@ func _on_game_manager_battle_ended(entity):
 		#$GameManager.removeLabels()
 		$GameManager.startBattlePhase()
 	else:
-		$GameManager.addLabel("Game over! You win!!", $GameManager.mainLabel)
+		print("You won!")
