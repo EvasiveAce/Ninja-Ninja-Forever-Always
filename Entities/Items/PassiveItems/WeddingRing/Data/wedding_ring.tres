@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://dbffhidxp8yr7"]
+
+[ext_resource type="Script" path="res://Entities/Items/Data/item_resource.gd" id="1_hubn8"]
+
+[resource]
+script = ExtResource("1_hubn8")
+itemName = "Wedding Ring"
+itemDescription = "+1 Roll"
+itemPrice = 12

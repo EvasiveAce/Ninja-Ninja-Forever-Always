@@ -17,11 +17,11 @@ func _on_game_manager_battle_ended(entity):
 	if dungeonSize == 8 or dungeonSize == 2:
 		await $GameManager.healRoll(entity)
 		#$GameManager.removeLabels()
-	##TODO: Fix Shop
+	##TODO: Fix Shop still 
 	if dungeonSize == 6 or dungeonSize == 4:
 		await $GameManager.shop(entity)
 		#$GameManager.removeLabels()
-	if dungeonSize == 5:
+	if dungeonSize == 9:
 		await $GameManager.item_drop(entity)
 		#$GameManager.removeLabels()
 	if dungeonSize == 1:

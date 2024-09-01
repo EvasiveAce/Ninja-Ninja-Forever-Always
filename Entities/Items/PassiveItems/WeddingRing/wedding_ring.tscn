@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://o2konvjvqhwa"]
+
+[ext_resource type="Script" path="res://Entities/Items/PassiveItems/WeddingRing/wedding_ring.gd" id="1_rcnp5"]
+[ext_resource type="Resource" uid="uid://dbffhidxp8yr7" path="res://Entities/Items/PassiveItems/WeddingRing/Data/wedding_ring.tres" id="2_bkilc"]
+[ext_resource type="SpriteFrames" uid="uid://c3opyj88sgkbt" path="res://Entities/Items/PassiveItems/WeddingRing/Data/wedding_ring_animations.tres" id="3_dunfl"]
+[ext_resource type="SpriteFrames" uid="uid://bg2ier80vbxhl" path="res://Entities/Items/PassiveItems/WeddingRing/Data/wedding_ring_passive_animations.tres" id="3_rwbiq"]
+
+[node name="Wedding Ring" type="Node2D"]
+script = ExtResource("1_rcnp5")
+itemResource = ExtResource("2_bkilc")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+sprite_frames = ExtResource("3_dunfl")
+animation = &"Idle"
+autoplay = "Idle"
+offset = Vector2(240, 85)
+
+[node name="PassiveSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+z_index = 1
+texture_filter = 1
+position = Vector2(155, 91)
+sprite_frames = ExtResource("3_rwbiq")
+animation = &"Idle"
+autoplay = "Idle"

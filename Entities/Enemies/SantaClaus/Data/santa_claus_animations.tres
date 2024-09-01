@@ -1,0 +1,35 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://b331gi6cj624g"]
+
+[ext_resource type="Texture2D" uid="uid://w44avvuhhqt" path="res://Entities/Enemies/SantaClaus/Art/SantaClausSpriteSheet.png" id="1_hvdbv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1ysk"]
+atlas = ExtResource("1_hvdbv")
+region = Rect2(0, 0, 48, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_thjf2"]
+atlas = ExtResource("1_hvdbv")
+region = Rect2(48, 0, 48, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8iib5"]
+atlas = ExtResource("1_hvdbv")
+region = Rect2(96, 0, 48, 62)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_g1ysk")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_thjf2")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_8iib5")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_thjf2")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
