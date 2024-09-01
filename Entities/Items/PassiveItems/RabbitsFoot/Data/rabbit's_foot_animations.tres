@@ -1,0 +1,35 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://boyoat2wjpgln"]
+
+[ext_resource type="Texture2D" uid="uid://bj7duiavnvjm2" path="res://Entities/Items/PassiveItems/RabbitsFoot/Art/TEMPRabbitsFootSpriteSheet.png" id="1_fvtsi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_spp7m"]
+atlas = ExtResource("1_fvtsi")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8e4rp"]
+atlas = ExtResource("1_fvtsi")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwe30"]
+atlas = ExtResource("1_fvtsi")
+region = Rect2(64, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_spp7m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8e4rp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_spp7m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jwe30")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]

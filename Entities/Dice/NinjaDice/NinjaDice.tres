@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_myptm")
 diceName = "Ninja"
-sides = 6
+sides = 100
 modifier = 0

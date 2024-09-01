@@ -1,63 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://cgbjkpnwht5es"]
+[gd_scene load_steps=5 format=3 uid="uid://cgbjkpnwht5es"]
 
 [ext_resource type="Script" path="res://Entities/Items/PassiveItems/RabbitsFoot/rabbit's_foot.gd" id="1_q0aqa"]
 [ext_resource type="Resource" uid="uid://nh2r0o1uaqbi" path="res://Entities/Items/PassiveItems/RabbitsFoot/Data/rabbit's_foot.tres" id="2_a8eq5"]
-[ext_resource type="Texture2D" uid="uid://bj7duiavnvjm2" path="res://Entities/Items/PassiveItems/RabbitsFoot/Art/TEMPRabbitsFootSpriteSheet.png" id="3_id1sb"]
-[ext_resource type="Texture2D" uid="uid://oinbm8tqw083" path="res://Entities/Items/PassiveItems/RabbitsFoot/Art/TEMPRabbitsFootPassiveSpriteSheet.png" id="4_an85n"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_spp7m"]
-atlas = ExtResource("3_id1sb")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8e4rp"]
-atlas = ExtResource("3_id1sb")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jwe30"]
-atlas = ExtResource("3_id1sb")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_rell7"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_spp7m")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8e4rp")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_spp7m")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jwe30")
-}],
-"loop": true,
-"name": &"Idle",
-"speed": 5.0
-}]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tdcau"]
-atlas = ExtResource("4_an85n")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1ie6g"]
-atlas = ExtResource("4_an85n")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_1cbod"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tdcau")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1ie6g")
-}],
-"loop": true,
-"name": &"Idle",
-"speed": 2.0
-}]
+[ext_resource type="SpriteFrames" uid="uid://boyoat2wjpgln" path="res://Entities/Items/PassiveItems/RabbitsFoot/Data/rabbit's_foot_animations.tres" id="3_fpbcq"]
+[ext_resource type="SpriteFrames" uid="uid://d1sb1b1aava1g" path="res://Entities/Items/PassiveItems/RabbitsFoot/Data/rabbit's_foot_passive_animations.tres" id="4_803tb"]
 
 [node name="Rabbit\'s Foot" type="Node2D"]
 script = ExtResource("1_q0aqa")
@@ -66,7 +12,7 @@ itemResource = ExtResource("2_a8eq5")
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 visible = false
 texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_rell7")
+sprite_frames = ExtResource("3_fpbcq")
 animation = &"Idle"
 autoplay = "Idle"
 offset = Vector2(240, 82)
@@ -76,7 +22,7 @@ visible = false
 top_level = true
 z_index = 1
 texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_1cbod")
+sprite_frames = ExtResource("4_803tb")
 animation = &"Idle"
 autoplay = "Idle"
 offset = Vector2(155, 92)

@@ -6,5 +6,5 @@
 script = ExtResource("1_lngtl")
 max_hp = 4
 moneyRange = 2
-rollAmount = 3
+rollAmount = 2
 dropChance = 70
