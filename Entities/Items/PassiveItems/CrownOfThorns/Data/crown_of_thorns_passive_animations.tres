@@ -2,11 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://dsaeclho7nj84" path="res://Entities/Items/PassiveItems/CrownOfThorns/Art/CrownOfThornsPassiveSpriteSheet.png" id="1_fmv3o"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tasjw"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfgrg"]
 atlas = ExtResource("1_fmv3o")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_54rwe"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xv8io"]
 atlas = ExtResource("1_fmv3o")
 region = Rect2(32, 0, 32, 32)
 
@@ -14,10 +14,10 @@ region = Rect2(32, 0, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_tasjw")
+"texture": SubResource("AtlasTexture_nfgrg")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_54rwe")
+"texture": SubResource("AtlasTexture_xv8io")
 }],
 "loop": true,
 "name": &"Idle",
